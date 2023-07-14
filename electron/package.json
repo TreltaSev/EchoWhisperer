@@ -1,0 +1,29 @@
+{
+  "name": "electron",
+  "version": "0.0.1",
+  "description": "A program written in c++ which sends out a \"ping\" to check for every process, then logs that inside a bin file. this repeats itself every 5 seconds with 99.40% accuracy.",
+  "main": "src/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TreltaSev/EchoWhisperer.git"
+  },
+  "author": "Trelta",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/TreltaSev/EchoWhisperer/issues"
+  },
+  "homepage": "https://github.com/TreltaSev/EchoWhisperer#readme",
+  "devDependencies": {
+    "@babel/preset-react": "^7.22.5",
+    "babel-loader": "^9.1.3",
+    "electron": "^25.3.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "webpack": "^5.88.1",
+    "webpack-cli": "^5.1.4"
+  }
+}
