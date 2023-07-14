@@ -1,0 +1,110 @@
+/* 
+    styling.module.css
+    ~~~~~~~~~~~~~~~~~~
+
+    Barebones css to be used within elements as a class.
+*/
+
+html, body {
+    height: 100%;
+    margin: 0;
+}
+
+/* Main Colors */
+.dark_sub {
+    background-color: #1E1F29;
+}
+
+.dark_main {
+    background-color: #2A2B38;
+}
+
+.dark_text_white {
+    color: #e2efff;
+}
+
+.dark_accent {
+    border-color: #1B1C25;
+}
+
+.dark_minimize {
+    background-color: #FCB444;
+}
+
+.dark_close {
+    background-color: #F85655;
+}
+
+.dark_opacity_50 {
+    background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Flex Types */
+.flex {
+    display: flex;
+}
+
+.flex_row {
+    display: flex;
+    flex-direction: row;
+}
+
+.flex_col {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Border Box */
+.border_box {
+    box-sizing: border-box;
+}
+
+/* Align Item Types */
+.align_items_start {
+    align-items: flex-start;
+}
+
+.align_items_center {
+    align-items: center;
+}
+
+.align_items_end {
+    align-items: end;
+}
+
+/* Justify Content Types */
+.justify_content_start {
+    justify-content: start;
+}
+
+.justify_content_center {
+    justify-content: center;
+}
+
+.justify_content_end {
+    justify-content: end;
+}
+
+/* Fill Types */
+.flex_fill_all {
+    width: 100%;
+    height: 100%;
+}
+
+.flex_fill_width {
+    width:100%;
+}
+
+/* Border Types */
+.border_bottom {
+    border-bottom: 1px solid;    
+}
+
+/* Specials */
+.nav_logic {
+    -webkit-app-region: drag;
+}
+
+.nav_logic * {
+    -webkit-app-region: no-drag;
+}

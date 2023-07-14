@@ -1,0 +1,19 @@
+/* 
+    custom.module.css
+    ~~~~~~~~~~~~~~~~~~
+
+    Just some custom classes whenever I dont want to mix it with the global css
+*/
+
+.ButtonGroup {
+    box-sizing: border-box;
+    padding:5px;
+}
+
+.ButtonGroup svg {
+    transition: 0.5s;
+}
+
+.ButtonGroup:hover svg {
+    opacity: 0.5;
+}

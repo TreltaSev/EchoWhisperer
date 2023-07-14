@@ -1,6 +1,7 @@
 const path = require('path');
 
 module.exports = {
+  
   mode: 'development',
   entry: './src/renderer.js',
   output: {
@@ -19,12 +20,22 @@ module.exports = {
           },
         },
       },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      },
+      {
+        test: /\.svg$/,
+        use: 'svg-inline-loader'
+      }
     ],
   },
   resolve: {
     extensions: ['.js'],
     alias: {
-      "@test": path.resolve(__dirname, "src/test")
+      "@components": path.resolve(__dirname, "src/components"),
+      "@assets": path.resolve(__dirname, "src/assets"),
     }
   },
+  target: 'electron-renderer'
 };
