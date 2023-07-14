@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.trelpy": "python",
+        "ostream": "cpp",
+        "thread": "cpp"
+    },
+    "C_Cpp.errorSquiggles": "disabled"
+}

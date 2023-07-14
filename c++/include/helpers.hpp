@@ -33,7 +33,7 @@ std::wstring CharToWString(const char* text)
 }
 
 /* Check if process already inside a vector. */
-boolean process_check(std::vector<std::wstring> vec, std::wstring tocheck)
+bool process_check(std::vector<std::wstring> vec, std::wstring tocheck)
 {
     auto it = std::find(vec.begin(), vec.end(), tocheck);
     if (it != vec.end()) {

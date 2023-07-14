@@ -26,7 +26,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \*******************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _assets_styling_module_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @assets/styling.module.css */ \"./src/assets/styling.module.css\");\n/* harmony import */ var _components_NavigationBar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @components/NavigationBar */ \"./src/components/NavigationBar.js\");\n\n\n\nconst App = () => {\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(\"div\", {\n    className: `${_assets_styling_module_css__WEBPACK_IMPORTED_MODULE_1__[\"default\"].flex_col} ${_assets_styling_module_css__WEBPACK_IMPORTED_MODULE_1__[\"default\"].align_items_center} ${_assets_styling_module_css__WEBPACK_IMPORTED_MODULE_1__[\"default\"].dark_main} ${_assets_styling_module_css__WEBPACK_IMPORTED_MODULE_1__[\"default\"].flex_fill_all}`\n  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_NavigationBar__WEBPACK_IMPORTED_MODULE_2__[\"default\"], null));\n};\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);\n\n//# sourceURL=webpack://echowhisperer/./src/components/App.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ \"./node_modules/react/index.js\");\n/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);\n/* harmony import */ var _assets_styling_module_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @assets/styling.module.css */ \"./src/assets/styling.module.css\");\n/* harmony import */ var _components_NavigationBar__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @components/NavigationBar */ \"./src/components/NavigationBar.js\");\n\n\n\nconst net = __webpack_require__(/*! net */ \"net\");\nconst App = () => {\n  (0,react__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {\n    console.log(\">>>\");\n    const client = new net.Socket();\n    client.connect(2241, 'localhost', function () {\n      console.log('Connected to the server');\n\n      // Send data to the server\n      client.write('Hello, server!');\n\n      // Close the connection after sending the data\n      client.end();\n    });\n    client.on('data', function (data) {\n      console.log('Received data from the server:', data.toString());\n    });\n    client.on('close', function () {\n      console.log('Connection closed');\n    });\n  }, []);\n  return /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(\"div\", {\n    className: `${_assets_styling_module_css__WEBPACK_IMPORTED_MODULE_1__[\"default\"].flex_col} ${_assets_styling_module_css__WEBPACK_IMPORTED_MODULE_1__[\"default\"].align_items_center} ${_assets_styling_module_css__WEBPACK_IMPORTED_MODULE_1__[\"default\"].dark_main} ${_assets_styling_module_css__WEBPACK_IMPORTED_MODULE_1__[\"default\"].flex_fill_all}`\n  }, /*#__PURE__*/react__WEBPACK_IMPORTED_MODULE_0___default().createElement(_components_NavigationBar__WEBPACK_IMPORTED_MODULE_2__[\"default\"], null));\n};\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (App);\n\n//# sourceURL=webpack://echowhisperer/./src/components/App.js?");
 
 /***/ }),
 
@@ -247,6 +247,16 @@ eval("\n\n/* istanbul ignore next  */\nfunction styleTagTransform(css, styleElem
 /***/ ((module) => {
 
 module.exports = require("electron");
+
+/***/ }),
+
+/***/ "net":
+/*!**********************!*\
+  !*** external "net" ***!
+  \**********************/
+/***/ ((module) => {
+
+module.exports = require("net");
 
 /***/ })
 

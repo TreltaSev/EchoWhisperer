@@ -1,0 +1,1 @@
+g++ -o server.exe -I"./include" ./src/server.cpp -lws2_32

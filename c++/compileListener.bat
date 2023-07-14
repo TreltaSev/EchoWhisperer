@@ -1,1 +1,0 @@
-g++ -o logger.exe -I"./include" ./src/listener.cpp
