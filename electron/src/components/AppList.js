@@ -38,7 +38,7 @@ const _swatch = class {
 
 
 const AppDetailChip = (props) => {
-    const processName = props.propsName !== undefined ? props.processName : "undefined.exe";
+    const processName = props.processName !== undefined ? props.processName : "undefined.exe";
     const hours = props.hours !== undefined ? props.hours : 999;
     const isOpen = new _swatch(props.isOpen);
     const isApplication = new _swatch(props.isApplication);
