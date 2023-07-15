@@ -5,6 +5,7 @@
     Just some custom classes whenever I dont want to mix it with the global css
 */
 
+/* Button Group for Close and minimize buttons in the application. */
 .ButtonGroup {
     box-sizing: border-box;
     padding:5px;
@@ -16,4 +17,21 @@
 
 .ButtonGroup:hover svg {
     opacity: 0.5;
+}
+
+/* AppList.js Full border for the AppDetailChip */
+.AppList_full_border_white {
+    border: 1px solid rgba(226,239,255,0.5);    
+}
+
+/* AppList.js left side chip for the AppDetailChip*/
+.AppList_left_side_chip {
+    width: 3px;
+    height: 30px;
+    border-radius: 20px;
+    background-color : #e2efff;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: -1px;
 }

@@ -5,6 +5,13 @@
     Barebones css to be used within elements as a class.
 */
 
+
+/* Lato Font */
+@font-face {
+    font-family: "Lato";
+    src: url("./regular.ttf") format("ttf");
+}
+
 html, body {
     height: 100%;
     margin: 0;
@@ -21,6 +28,10 @@ html, body {
 
 .dark_text_white {
     color: #e2efff;
+}
+
+.dark_white_accent {
+    border-color: #e2efff;
 }
 
 .dark_accent {
@@ -72,6 +83,10 @@ html, body {
     align-items: end;
 }
 
+.align_self_stretch {
+    align-self: stretch;
+}
+
 /* Justify Content Types */
 .justify_content_start {
     justify-content: start;
@@ -95,9 +110,40 @@ html, body {
     width:100%;
 }
 
+.flex_fill_height {
+    height: 100%;
+}
+
 /* Border Types */
 .border_bottom {
     border-bottom: 1px solid;    
+}
+
+.border_right {
+    border-right: 1px solid;
+}
+
+.border_top {
+    border-top: 1px solid;
+}
+
+.border_left {
+    border-left: 1px solid;
+}
+
+.border_all {
+    border: 1px solid;
+}
+
+/* Text Types */
+.text_m {
+    font-family: "Lato";
+    font-size: 10px;
+}
+
+.text_s {
+    font-family: "Lato";
+    font-size: 8px;
 }
 
 /* Specials */

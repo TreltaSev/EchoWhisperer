@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import styling from "@assets/styling.module.css";
 import NavigationBar from "@components/NavigationBar";
+import AppList from "./AppList";
 
 const net = require("net");
 
@@ -32,6 +33,9 @@ const App = () => {
             
             { /* Navigation Menu holds all the buttons */ }
             <NavigationBar/>
+            <div className={`${styling.flex_row} ${styling.align_items_start} ${styling.justify_content_start} ${styling.flex_fill_all}`}>
+              <AppList/>
+            </div>
 
 
         </div>
