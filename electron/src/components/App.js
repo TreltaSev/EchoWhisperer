@@ -2,6 +2,8 @@ import React, { useEffect, useRef } from "react";
 import styling from "@assets/styling.module.css";
 import NavigationBar from "@components/NavigationBar";
 import AppList from "./AppList";
+import AppInfo from "./AppInfo";
+import SortingSettings from "./SortingSettings";
 
 const net = require("net");
 
@@ -35,9 +37,9 @@ const App = () => {
             <NavigationBar/>
             <div className={`${styling.flex_row} ${styling.align_items_start} ${styling.justify_content_start} ${styling.flex_fill_all}`}>
               <AppList/>
+              <SortingSettings/>
             </div>
-
-
+            <AppInfo/>
         </div>
     );
 }
