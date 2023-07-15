@@ -9,10 +9,22 @@ import styling from "@assets/styling.module.css"
 
 /* Make the app info part of the application. */
 
+{/* Basic Text Component */}
+const Text = (props) => {
+    const _color = props.color !== undefined ? props.color : "#e2efff";
+    const _opacity = props.opacity !== undefined ? props.opacity : "1";
+    const _small = props.small !== undefined ? props.small : false;
+    return (
+        <span style={{opacity: _opacity, color: _color}} className={`${_small ? styling.text_s : styling.text_m}`}>
+            {props.children}
+        </span>
+    )
+}
+
 {/* Basic Text Group Component */}
 const BTextGroup = (props) => {
     return (
-        <div style={{gap: 5}} className={`${styling.flex_row}`}>
+        <div style={{gap: 2}} className={`${styling.flex_row}`}>
             {props.children}
         </div>
     )
@@ -36,18 +48,33 @@ const _bwatch = class {
     constructor(bool) {
         bool = bool !== undefined ? bool : false;
         this.text = bool ? "True" : "False";
-        this.color = bool ? "#0f0" : "#f00";
+        this.color = bool ? "#8ffe93" : "#fe5d5d";
     }
 }
 
 {/* App Info Component */}
 const AppInfo = (props) => {
-    const _loggerActive = false;
-    const _loggerInstalled = true;
-    const _allGud = true; 
+    const _loggerActive = new _bwatch(false);
+    const _loggerInstalled = new _bwatch(true);
+    const _allGud = new _bwatch(true); 
 
     return (
-        <></>
+        <div style={{height: 20, gap: 10, padding: 10}} className={`${styling.flex_row} ${styling.flex_fill_width} ${styling.border_box} ${styling.border_top} ${styling.dark_sub} ${styling.dark_accent} ${styling.align_items_center}`}>
+            <BTextGroup>
+                <Text small={true}>loggerActive?</Text>
+                <Text small={true} color={_loggerActive.color}>{_loggerActive.text}</Text>
+            </BTextGroup>
+
+            <BTextGroup>
+                <Text small={true}>loggerInstalled?</Text>
+                <Text small={true} color={_loggerInstalled.color}>{_loggerInstalled.text}</Text>
+            </BTextGroup>
+
+            <BTextGroup>
+                <Text small={true}>allGud?</Text>
+                <Text small={true} color={_allGud.color}>{_allGud.text}</Text>
+            </BTextGroup>
+        </div>
     )
 }
 
