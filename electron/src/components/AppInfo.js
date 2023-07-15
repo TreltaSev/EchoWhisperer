@@ -18,8 +18,6 @@ const BTextGroup = (props) => {
     )
 }
 
-
-
 {/* Current Time Method */}
 const getCurrentTime = (props) => {
     const _date = new Date();
@@ -33,9 +31,21 @@ const getCurrentTime = (props) => {
     return `${_hours}:${_minutes} ${ampm}`;
 }
 
+{/* AppInfo bwatch class */}
+const _bwatch = class {
+    constructor(bool) {
+        bool = bool !== undefined ? bool : false;
+        this.text = bool ? "True" : "False";
+        this.color = bool ? "#0f0" : "#f00";
+    }
+}
 
 {/* App Info Component */}
-const AppInfo = () => {
+const AppInfo = (props) => {
+    const _loggerActive = false;
+    const _loggerInstalled = true;
+    const _allGud = true; 
+
     return (
         <></>
     )
