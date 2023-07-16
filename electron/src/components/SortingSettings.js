@@ -20,7 +20,7 @@ const Setting = (props) => {
 
 const SortingSettings = () => {
     return (
-        <div style={{padding: 30, gap: 20, overflowY: "auto"}} className={`${styling.flex_col} ${styling.flex_fill_all} ${styling.flex_align_center} ${styling.border_box}`}>
+        <div style={{padding: 30, gap: 20, overflowY: "scroll", maxHeight: 545}} className={`${styling.flex_col} ${styling.flex_fill_all} ${styling.flex_align_center} ${styling.border_box} ${styling.scroll}`}>
             <Setting>
                 <Text size={14}>Sort By Name</Text>
                 <Text size={12} opacity="0.5">Lists out all applications and sorts by name meaning it follows the abc rule :).</Text>
@@ -37,6 +37,24 @@ const SortingSettings = () => {
                 <Text size={14}>Hide all Non-Applications</Text>
                 <Text size={12} opacity="0.5">Pretty self-explanatory, hides all entries with isApplication? set to <Text size={10} color="#FE5D5D">False</Text></Text>
                 <Text size={10} color="#6282A3">Deactivates Hide all Applications</Text>
+            </Setting>
+
+            <Setting>
+                <Text size={14}>Hide all Applications</Text>
+                <Text size={12} opacity="0.5">Pretty self-explanatory, hides all entries with isApplication? set to <Text size={10} color="#8FFE93">True</Text></Text>
+                <Text size={10} color="#6282A3">Deactivates Hide all Non-Applications</Text>
+            </Setting>
+
+            <Setting>
+                <Text size={14}>Hide all Applications</Text>
+                <Text size={12} opacity="0.5">Pretty self-explanatory, hides all entries with isApplication? set to <Text size={10} color="#8FFE93">True</Text></Text>
+                <Text size={10} color="#6282A3">Deactivates Hide all Non-Applications</Text>
+            </Setting>
+
+            <Setting>
+                <Text size={14}>Hide all Applications</Text>
+                <Text size={12} opacity="0.5">Pretty self-explanatory, hides all entries with isApplication? set to <Text size={10} color="#8FFE93">True</Text></Text>
+                <Text size={10} color="#6282A3">Deactivates Hide all Non-Applications</Text>
             </Setting>
 
             <Setting>

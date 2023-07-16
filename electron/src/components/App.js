@@ -35,7 +35,7 @@ const App = () => {
             
             { /* Navigation Menu holds all the buttons */ }
             <NavigationBar/>
-            <div className={`${styling.flex_row} ${styling.align_items_start} ${styling.justify_content_start} ${styling.flex_fill_all}`}>
+            <div className={`${styling.flex_row} ${styling.align_items_start} ${styling.justify_content_start} ${styling.align_self_stretch} ${styling.justify_self_stretch}`}>
               <AppList/>
               <SortingSettings/>
             </div>

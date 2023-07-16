@@ -71,7 +71,7 @@ const AppInfo = (props) => {
     }, [])
 
     return (
-        <div style={{height: 20, gap: 10, padding: 10}} className={`${styling.flex_row} ${styling.flex_fill_width} ${styling.border_box} ${styling.border_top} ${styling.dark_sub} ${styling.dark_accent} ${styling.align_items_center}`}>
+        <div style={{height: 20, gap: 10, paddingLeft: 10, paddingRight:10}} className={`${styling.flex_row} ${styling.flex_fill_width} ${styling.border_box} ${styling.border_top} ${styling.dark_sub} ${styling.dark_accent} ${styling.align_items_center}`}>
             <BTextGroup>
                 <Text small={true} opacity="0.5">loggerActive?</Text>
                 <Text small={true} color={_loggerActive.color}>{_loggerActive.text}</Text>
