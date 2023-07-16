@@ -35,3 +35,8 @@
     transform: translateY(-50%);
     left: -1px;
 }
+
+/* SortingSettings.js Full border white for the Setting Component */
+.SortingSettings_full_border_white {
+    border: 1px solid rgba(226, 239, 255, 0.5);
+}

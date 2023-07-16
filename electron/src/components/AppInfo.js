@@ -4,7 +4,7 @@
  * 
  * @returns 
  */
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styling from "@assets/styling.module.css"
 
 /* Make the app info part of the application. */
@@ -51,11 +51,24 @@ const _bwatch = class {
     }
 }
 
+
+
 {/* App Info Component */}
 const AppInfo = (props) => {
+    const [__, ___] = useState(null);
     const _loggerActive = new _bwatch(false);
     const _loggerInstalled = new _bwatch(true);
     const _allGud = new _bwatch(true); 
+    const [_runningTicker, _setRunningTicker] = useState(0);
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            _setRunningTicker(_runningTicker => _runningTicker + 1);
+        }, 1000);
+        return () => {
+            clearInterval(interval);
+        }
+    }, [])
 
     return (
         <div style={{height: 20, gap: 10, padding: 10}} className={`${styling.flex_row} ${styling.flex_fill_width} ${styling.border_box} ${styling.border_top} ${styling.dark_sub} ${styling.dark_accent} ${styling.align_items_center}`}>
