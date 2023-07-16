@@ -26,15 +26,15 @@ span {
 }
 
 .scroll::-webkit-scrollbar-thumb {
-    background-color: red;
+    background-color: rgba(226, 239, 255, 0.25);
 }
 
 .scroll::-webkit-scrollbar-thumb:hover {
-    background-color: blue;
+    background-color: rgba(226, 239, 255, 0.5);
 }
 
 .scroll::-webkit-scrollbar-track{
-    background-color: #FCB444;
+    background-color: rgba(30, 31, 41, 0.5);
 }
 
 /* Main Colors */

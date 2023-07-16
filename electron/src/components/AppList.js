@@ -45,7 +45,7 @@ const AppDetailChip = (props) => {
 
 
     return (
-        <div style={{borderRadius: 10, minHeight: 40, minWidth: 300, position: "relative"}} className={`${styling.flex_row} ${styling.align_items_center} ${styling.align_self_stretch} ${custom_styling.AppList_full_border_white}`}>
+        <div style={{borderRadius: 10, minHeight: 40, maxWidth: 300, position: "relative"}} className={`${styling.flex_row} ${styling.align_items_center} ${styling.align_self_stretch} ${custom_styling.AppList_full_border_white}`}>
             { /* Left Side Chip */}
             <div className={`${custom_styling.AppList_left_side_chip}`}/>
 
@@ -76,7 +76,7 @@ const AppDetailChip = (props) => {
 
 const AppList = () => {
     return (
-        <div style={{minWidth: 320, padding: "30px 10px", gap:10, overflowY: "auto", overflowX: "hidden"}} className={`${styling.flex_col} ${styling.align_items_center} ${styling.border_box} ${styling.flex_fill_height} ${styling.dark_sub} ${styling.border_right} ${styling.dark_accent}`}>
+        <div style={{minWidth: 320, padding: "30px 10px", gap:10, overflowY: "auto", overflowX: "hidden"}} className={`${styling.flex_col} ${styling.align_items_center} ${styling.border_box} ${styling.flex_fill_height} ${styling.dark_sub} ${styling.border_right} ${styling.dark_accent} ${styling.scroll}`}>
             <AppDetailChip processName="discord.exe" hours={232} isOpen={true} isApplication={true}/>
         </div>
     )
