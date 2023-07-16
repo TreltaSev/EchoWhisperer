@@ -17,6 +17,10 @@ html, body {
     margin: 0;
 }
 
+span {
+    user-select: none;
+}
+
 /* Main Colors */
 .dark_sub {
     background-color: #1E1F29;

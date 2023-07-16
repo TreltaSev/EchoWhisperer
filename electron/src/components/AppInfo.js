@@ -24,7 +24,7 @@ const Text = (props) => {
 {/* Basic Text Group Component */}
 const BTextGroup = (props) => {
     return (
-        <div style={{gap: 2}} className={`${styling.flex_row}`}>
+        <div style={{gap: 2, whiteSpace: "nowrap"}} className={`${styling.flex_row}`}>
             {props.children}
         </div>
     )
@@ -33,12 +33,11 @@ const BTextGroup = (props) => {
 {/* Current Time Method */}
 const getCurrentTime = (props) => {
     const _date = new Date();
-    const _hours = _date.getHours();
-    const _minutes = _date.getMinutes();
+    let _hours = _date.getHours();
+    let _minutes = _date.getMinutes();
     const ampm = _hours >= 12 ? "pm" : "am";
     _hours = _hours % 12;
     _hours = _hours ? _hours : 12;
-    _hours = String(_hours).padStart(2, "0");
     _minutes = String (_minutes).padStart(2, "0");
     return `${_hours}:${_minutes} ${ampm}`;
 }
@@ -61,18 +60,25 @@ const AppInfo = (props) => {
     return (
         <div style={{height: 20, gap: 10, padding: 10}} className={`${styling.flex_row} ${styling.flex_fill_width} ${styling.border_box} ${styling.border_top} ${styling.dark_sub} ${styling.dark_accent} ${styling.align_items_center}`}>
             <BTextGroup>
-                <Text small={true}>loggerActive?</Text>
+                <Text small={true} opacity="0.5">loggerActive?</Text>
                 <Text small={true} color={_loggerActive.color}>{_loggerActive.text}</Text>
             </BTextGroup>
 
             <BTextGroup>
-                <Text small={true}>loggerInstalled?</Text>
+                <Text small={true} opacity="0.5">loggerInstalled?</Text>
                 <Text small={true} color={_loggerInstalled.color}>{_loggerInstalled.text}</Text>
             </BTextGroup>
 
             <BTextGroup>
-                <Text small={true}>allGud?</Text>
+                <Text small={true} opacity="0.5">allGud?</Text>
                 <Text small={true} color={_allGud.color}>{_allGud.text}</Text>
+            </BTextGroup>
+
+            <div className={styling.flex_fill_width}/>
+            
+            {/* Current tim in hh:mm am/pm */}
+            <BTextGroup>
+                <Text small={true} opacity="0.5">{getCurrentTime()}</Text>
             </BTextGroup>
         </div>
     )
