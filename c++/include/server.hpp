@@ -15,14 +15,27 @@
 #include <vector>
 #include "json.hpp"
 #include "entries.hpp"
+#include "helpers.hpp"
 
 
 using tcp = boost::asio::ip::tcp;
 
+bool incheck(std::vector<ProcessInfo> processes, int pid) {
+    for (const auto& process: processes) {
+        if (static_cast<int>(process.id) == pid) {
+            return true;
+        }
+    }
+    return false;
+}
+
 std::string getEntries() {
+
+    std::vector<ProcessInfo> processes;
+    EnumWindows(reinterpret_cast<WNDENUMPROC>(EnumProcessProc), reinterpret_cast<LPARAM>(&processes));
+
     nlohmann::json data;
     nlohmann::json ContainerEntries = nlohmann::json::array();
-
     Entries hEntries("bin/entries.bin");
     std::vector<Entry> readEntries = hEntries.readEntries();
     for (const Entry& entry : readEntries) {
@@ -31,6 +44,7 @@ std::string getEntries() {
         j_entry["time"] = entry.time;
         j_entry["isApplication"] = entry.isApplication;
         j_entry["pid"] = entry.pid;
+        j_entry["isOpen"] = incheck(processes, entry.pid);
         ContainerEntries.push_back(j_entry);
     }
 

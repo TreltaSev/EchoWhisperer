@@ -39,10 +39,21 @@ const _swatch = class {
 
 const AppDetailChip = (props) => {    
     const processName = props.processName !== undefined ? props.processName : "undefined.exe";
-    const hours = props.hours !== undefined ? props.hours : 999;
+    const hours = props.seconds !== undefined ? props.hours : 999;
     const isOpen = new _swatch(props.isOpen);
     const isApplication = new _swatch(props.isApplication);
 
+    const convert = (seconds) => {
+        if (seconds >= 3600) {
+            const hours = Math.round(seconds/3600 * 10) / 10;
+            return `${hours} ${hours > 1 ? "hrs" : "hr"}`;
+        } else if (seconds >= 60) {
+            const minutes = Math.round(seconds/60 * 10) / 10;
+            return `${minutes} ${minutes > 1 ? "mins" : "min"}`;
+        } else {
+            return `${seconds} ${seconds > 1 ? "secs" : "sec"}`;
+        }
+    }
 
     return (
         <div style={{borderRadius: 10, position: "relative"}} className={`${styling.flex_row} ${styling.align_items_center} ${styling.align_self_stretch} ${custom_styling.AppList_full_border_white}`}>
@@ -55,7 +66,7 @@ const AppDetailChip = (props) => {
                     <AppDetailText>
                         {processName}
                     </AppDetailText>
-                    <AppDetailText opacity="0.5" small={true}>{`${hours} ${hours > 1 ? "hrs" : "hr"}`}</AppDetailText>
+                    <AppDetailText opacity="0.5" small={true}>{convert(props.seconds)}  {`${isOpen ? `pid:${props.pid}` : ""}`}</AppDetailText>
                 </AppDetailTextGroup>
 
                 <AppDetailTextGroup>
@@ -80,7 +91,7 @@ const AppList = (props) => {
         <div style={{minWidth: 320, padding: "30px 10px", gap:10, overflowY: "auto", overflowX: "hidden"}} className={`${styling.flex_col} ${styling.align_items_center} ${styling.border_box} ${styling.flex_fill_height} ${styling.dark_sub} ${styling.border_right} ${styling.dark_accent} ${styling.scroll}`}>
             {
                 props.entries !== [] ? Object.entries(props.entries).map(([k, s], i) => (
-                    <AppDetailChip key={`${s.name}__`} processName={s.name} hours={s.time} isOpen={s.isOpen} isApplication={false}/>
+                    <AppDetailChip key={`${s.name}__`} processName={s.name} seconds={s.time} isOpen={s.isOpen} isApplication={false} pid={s.pid}/>
                 )) : <></>
             }
         </div>
