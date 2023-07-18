@@ -1,6 +1,6 @@
 # EchoWhisperer (Main) v0.0.1 
 
-### A up-to-date process logger for easy use and bragging rights.
+### A up-to-date process logger for easy use and bragging rights for WINDOWS.
 Echo Whisperer is a commandline/gui application that simply logs the amount 
 of time you spend on a single application.
 all processes are logged and you choose which ones can be favorited or are applications.
