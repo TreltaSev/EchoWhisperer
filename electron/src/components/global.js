@@ -42,7 +42,7 @@ export const undefinedCheck = (_val, _default) => {
  */
 export const Text = (props) => {   
 
-    const _color = undefinedCheck(props.color, "#e2efff");
+    const _color = undefinedCheck(props.color, "#ECF1FF");
     const _opacity = undefinedCheck(props.opacity, "1");
     const _size = undefinedCheck(props.size, 10);
     const _fontFamily = undefinedCheck(props.fontFamily, "Lato");

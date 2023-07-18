@@ -27,6 +27,10 @@ module.exports = {
       {
         test: /\.svg$/,
         use: 'svg-inline-loader'
+      },
+      {
+        test: /\.(woff2?|ttf|eot|svg)$/,
+        type: 'asset/resource'
       }
     ],
   },

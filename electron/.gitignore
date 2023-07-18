@@ -36,14 +36,15 @@ node_modules/
 
 # dependencies
 /node_modules
+nsis_build/
+dist/
 /.pnp
 .pnp.js
 
 # testing
 /coverage
 
-# production
-/build
+/dist
 
 # misc
 .DS_Store

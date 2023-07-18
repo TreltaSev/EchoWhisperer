@@ -45,19 +45,19 @@ span {
 
 /* Main Colors */
 .dark_sub {
-    background-color: #1E1F29;
+    background-color: #181818;
 }
 
 .dark_main {
-    background-color: #2A2B38;
+    background-color: #212121;
 }
 
 .dark_text_white {
-    color: #e2efff;
+    color: #ECF1FF;
 }
 
 .dark_white_accent {
-    border-color: #e2efff;
+    border-color: #ECF1FF;
 }
 
 .dark_accent {
@@ -65,11 +65,11 @@ span {
 }
 
 .dark_minimize {
-    background-color: #FCB444;
+    background-color: #2880D2;
 }
 
 .dark_close {
-    background-color: #F85655;
+    background-color: #F43944;
 }
 
 .dark_opacity_50 {

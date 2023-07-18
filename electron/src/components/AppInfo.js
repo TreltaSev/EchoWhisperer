@@ -47,7 +47,7 @@ const _bwatch = class {
     constructor(bool) {
         bool = bool !== undefined ? bool : false;
         this.text = bool ? "True" : "False";
-        this.color = bool ? "#8ffe93" : "#fe5d5d";
+        this.color = bool ? "#52FF59" : "#F43944";
     }
 }
 
@@ -73,17 +73,17 @@ const AppInfo = (props) => {
     return (
         <div style={{height: 20, gap: 10, paddingLeft: 10, paddingRight:10}} className={`${styling.flex_row} ${styling.flex_fill_width} ${styling.border_box} ${styling.border_top} ${styling.dark_sub} ${styling.dark_accent} ${styling.align_items_center}`}>
             <BTextGroup>
-                <Text small={true} opacity="0.5">loggerActive?</Text>
+                <Text small={true} color="rgba(236, 241, 255, 0.5)">loggerActive?</Text>
                 <Text small={true} color={_loggerActive.color}>{_loggerActive.text}</Text>
             </BTextGroup>
 
             <BTextGroup>
-                <Text small={true} opacity="0.5">loggerInstalled?</Text>
+                <Text small={true} color="rgba(236, 241, 255, 0.5)">loggerInstalled?</Text>
                 <Text small={true} color={_loggerInstalled.color}>{_loggerInstalled.text}</Text>
             </BTextGroup>
 
             <BTextGroup>
-                <Text small={true} opacity="0.5">allGud?</Text>
+                <Text small={true} color="rgba(236, 241, 255, 0.5)">allGud?</Text>
                 <Text small={true} color={_allGud.color}>{_allGud.text}</Text>
             </BTextGroup>
 
@@ -91,7 +91,7 @@ const AppInfo = (props) => {
             
             {/* Current tim in hh:mm am/pm */}
             <BTextGroup>
-                <Text small={true} opacity="0.5">{getCurrentTime()}</Text>
+                <Text small={true} color="rgba(236, 241, 255, 0.5)">{getCurrentTime()}</Text>
             </BTextGroup>
         </div>
     )

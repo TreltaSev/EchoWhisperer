@@ -9,7 +9,7 @@ import styling from "@assets/styling.module.css";
 import custom_styling from "@assets/custom.module.css"
 
 const AppDetailText = (props) => {
-    const _color = props.color !== undefined ? props.color : "#e2efff";
+    const _color = props.color !== undefined ? props.color : "#ECF1FF";
     const _opacity = props.opacity !== undefined ? props.opacity : "1";
     const _small = props.small !== undefined ? props.small : false;
     return (
@@ -32,7 +32,7 @@ const _swatch = class {
     constructor (bool) {
         bool = bool !== undefined ? bool : false;
         this.text = bool === true ? "True" : "False";
-        this.color = bool === true ? "#8ffe93" : "#fe5d5d";
+        this.color = bool === true ? "#52FF59" : "#F43944";
     }
 }
 
