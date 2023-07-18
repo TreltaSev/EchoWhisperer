@@ -5,7 +5,7 @@
 
 int main() {
     Entries entries("bin/entries.bin");
-    Entry newEntry{"Process", 1, 2, 3};
+    Entry newEntry{"Process", 1, 0, 3};
     entries.addifnotexists(newEntry);    
     TypeOneResponse response = entries.find("Process");
     if (response.failed) {

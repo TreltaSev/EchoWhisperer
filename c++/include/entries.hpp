@@ -65,6 +65,8 @@ void Entries::updateBulk(int amount)
             file.read(reinterpret_cast<char*>(&time), sizeof(time));
             int isApplication;
             file.read(reinterpret_cast<char*>(&isApplication), sizeof(isApplication));
+            int pid;
+            file.read(reinterpret_cast<char*>(&pid), sizeof(pid));
             time += amount;
             Entry entry{std::move(name), time, isApplication};
             entries.push_back(entry);
@@ -85,6 +87,7 @@ void Entries::saveBulk(std::vector<Entry>& entries)
             file.write(entry.name.c_str(), nameSize);
             file.write(reinterpret_cast<const char*>(&entry.time), sizeof(entry.time));
             file.write(reinterpret_cast<const char*>(&entry.isApplication), sizeof(entry.isApplication));  
+            file.write(reinterpret_cast<const char*>(&entry.pid), sizeof(entry.pid));  
         }
         file.close();
     }
@@ -100,11 +103,13 @@ bool Entries::exists(std::string entryName)
             int nameSize;
             int time;
             int isApplication;
+            int pid;
             if (!file.read(reinterpret_cast<char*>(&nameSize), sizeof(nameSize))) break;
             std::string name(nameSize, '\0');
             file.read(&name[0], nameSize);
             if (!file.read(reinterpret_cast<char*>(&time), sizeof(time))) break;
             if (!file.read(reinterpret_cast<char*>(&isApplication), sizeof(isApplication))) break;
+            if (!file.read(reinterpret_cast<char*>(&pid), sizeof(pid))) break;
 
             if (name == entryName) {
                 file.close();
@@ -134,6 +139,7 @@ bool Entries::addifnotexists(Entry& entry){
     file.write(entry.name.c_str(), nameSize);
     file.write(reinterpret_cast<const char*>(&entry.time), sizeof(entry.time));
     file.write(reinterpret_cast<const char*>(&entry.isApplication), sizeof(entry.isApplication));
+    file.write(reinterpret_cast<const char*>(&entry.pid), sizeof(entry.pid));
     file.close();
     printf("[Entry] Added \"%s\"\n", entry.name.c_str());
     return true;
@@ -155,9 +161,12 @@ TypeOneResponse Entries::find(std::string entryName){
             file.read(reinterpret_cast<char*>(&time), sizeof(time));
             int isApplication;
             file.read(reinterpret_cast<char*>(&isApplication), sizeof(isApplication));
+            int pid;
+            file.read(reinterpret_cast<char*>(&pid), sizeof(pid));
             
             typeResponse.time = time;
             typeResponse.name = name;
+            typeResponse.pid = pid;
             typeResponse.isApplication = isApplication;
             if (name == entryName)
             {
@@ -183,6 +192,7 @@ TypeOneResponse Entries::read(std::ifstream& file) {
     typeResponse.name = name;
     file.read(reinterpret_cast<char*>(&typeResponse.time), sizeof(typeResponse.time));
     file.read(reinterpret_cast<char*>(&typeResponse.isApplication), sizeof(typeResponse.isApplication));
+    file.read(reinterpret_cast<char*>(&typeResponse.pid), sizeof(typeResponse.pid));
     return typeResponse;
 }
 
