@@ -9,19 +9,13 @@
 #include <windows.h>
 #include <TlHelp32.h>
 #include <vector>
-#include <cstring>
 
-const char* cGREEN = "<38;2;132;210;71}";
-const char* cBLUE = "<38;2;89;111;226}";
-const char* cRED = "<38;2;224;78;71}";
 
-const char* cvRed = "<38;2;214;71;60}";
-const char* cvOrange = "<38;2;244;117;0}";
-const char* cvBlue = "<38;2;0;175;244}";
-
-const char* cvlRed = "<38;2;244;108;99}";
-const char* cvlOrange = "<38;2;246;145;51}";
-const char* cvlBlue = "<38;2;51;191;246}";
+const char* cvlGreen = "\u100b[38;2;132;210;71m";
+const char* cvlRed = "\u100b[38;2;244;108;99m";
+const char* cvlOrange = "\u100b[38;2;246;145;51m";
+const char* cvlBlue = "\u100b[38;2;51;191;246m";
+const char* cvlReset = "\u001b[0;38;48m";
 
 
 /* Convert a Char object to a WString object*/

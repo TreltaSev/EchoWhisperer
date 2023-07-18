@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include "bcolors_a.hpp"
+#include "helpers.hpp"
 
 struct Entry
 {

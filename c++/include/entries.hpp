@@ -9,20 +9,23 @@
 #include <fstream>
 #include <string>
 #include <vector>
-
+#include <codecvt>
+#include "helpers.hpp"
 
 struct Entry
 {
     std::string name;
-    long time;
+    int time;
     int isApplication;
+    int pid;
 };
 
 class TypeOneResponse {
     public:
         int nameSize;
-        long time;
+        int time;
         int isApplication;
+        int pid;
         std::string name;
         bool failed = false;
 };
@@ -58,7 +61,7 @@ void Entries::updateBulk(int amount)
             };
             std::string name(nameSize, '\0');
             file.read(&name[0], nameSize);
-            long time;
+            int time;
             file.read(reinterpret_cast<char*>(&time), sizeof(time));
             int isApplication;
             file.read(reinterpret_cast<char*>(&isApplication), sizeof(isApplication));
@@ -95,7 +98,7 @@ bool Entries::exists(std::string entryName)
         while(true)
         {
             int nameSize;
-            long time;
+            int time;
             int isApplication;
             if (!file.read(reinterpret_cast<char*>(&nameSize), sizeof(nameSize))) break;
             std::string name(nameSize, '\0');
@@ -113,11 +116,9 @@ bool Entries::exists(std::string entryName)
     return false;
 }
 
-bool Entries::addifnotexists(Entry& entry)
-{
-
+bool Entries::addifnotexists(Entry& entry){
     if (this->exists(entry.name)) {
-        bcolors().send("%s[Entry] %sSkipped %s\"%s\"", cvlBlue, cvlOrange, cvlRed,entry.name.c_str());
+        printf("[Entry] Skipped \"%s\"\n", entry.name.c_str());
         return false;
     }
     
@@ -128,14 +129,13 @@ bool Entries::addifnotexists(Entry& entry)
         std::cerr << "Failed to open file " << fileName << "\n";
         return false;
     }
-
     int nameSize = entry.name.size();
     file.write(reinterpret_cast<const char*>(&nameSize), sizeof(nameSize));
     file.write(entry.name.c_str(), nameSize);
     file.write(reinterpret_cast<const char*>(&entry.time), sizeof(entry.time));
     file.write(reinterpret_cast<const char*>(&entry.isApplication), sizeof(entry.isApplication));
     file.close();
-    bcolors().send("%s[Entry] %sAdded %s\"%s\"", cvlBlue, cvlOrange, cvlRed,entry.name.c_str());
+    printf("[Entry] Added \"%s\"\n", entry.name.c_str());
     return true;
 }
 
@@ -151,12 +151,14 @@ TypeOneResponse Entries::find(std::string entryName){
             if (!file.read(reinterpret_cast<char*>(&nameSize), sizeof(nameSize))) break;
             std::string name(nameSize, '\0');
             file.read(&name[0], nameSize);
-            long time;
+            int time;
             file.read(reinterpret_cast<char*>(&time), sizeof(time));
             int isApplication;
             file.read(reinterpret_cast<char*>(&isApplication), sizeof(isApplication));
             
             typeResponse.time = time;
+            typeResponse.name = name;
+            typeResponse.isApplication = isApplication;
             if (name == entryName)
             {
                 break;
