@@ -39,9 +39,8 @@ const _swatch = class {
 
 const AppDetailChip = (props) => {    
     const processName = props.processName !== undefined ? props.processName : "undefined.exe";
-    const hours = props.seconds !== undefined ? props.hours : 999;
     const isOpen = new _swatch(props.isOpen);
-    const isApplication = new _swatch(props.isApplication);
+    const isFavorite = new _swatch(props.isFavorite);
 
     const convert = (seconds) => {
         if (seconds >= 3600) {
@@ -75,8 +74,8 @@ const AppDetailChip = (props) => {
                 </AppDetailTextGroup>
 
                 <AppDetailTextGroup>
-                    <AppDetailText>isApplication?</AppDetailText>
-                    <AppDetailText color={isApplication.color}>{isApplication.text}</AppDetailText>
+                    <AppDetailText>isFavorite?</AppDetailText>
+                    <AppDetailText color={isFavorite.color}>{isFavorite.text}</AppDetailText>
                 </AppDetailTextGroup>
 
             </div>
@@ -91,7 +90,7 @@ const AppList = (props) => {
         <div style={{minWidth: 320, padding: "30px 10px", gap:10, overflowY: "auto", overflowX: "hidden"}} className={`${styling.flex_col} ${styling.align_items_center} ${styling.border_box} ${styling.flex_fill_height} ${styling.dark_sub} ${styling.border_right} ${styling.dark_accent} ${styling.scroll}`}>
             {
                 props.entries !== [] ? Object.entries(props.entries).map(([k, s], i) => (
-                    <AppDetailChip key={`${s.name}__`} processName={s.name} seconds={s.time} isOpen={s.isOpen} isApplication={false} pid={s.pid}/>
+                    <AppDetailChip key={`${s.name}__`} processName={s.name} seconds={s.time} isOpen={s.isOpen} isFavorite={false} pid={s.pid}/>
                 )) : <></>
             }
         </div>

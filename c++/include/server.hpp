@@ -42,7 +42,7 @@ std::string getEntries() {
         nlohmann::json j_entry;
         j_entry["name"] = entry.name;
         j_entry["time"] = entry.time;
-        j_entry["isApplication"] = entry.isApplication;
+        j_entry["isFavorite"] = entry.isFavorite;
         j_entry["pid"] = entry.pid;
         j_entry["isOpen"] = incheck(processes, entry.pid);
         ContainerEntries.push_back(j_entry);
