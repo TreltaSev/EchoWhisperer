@@ -84,7 +84,7 @@ const AppDetailChip = (props) => {
                     <AppDetailText>
                         {processName}
                     </AppDetailText>
-                    <AppDetailText opacity="0.5" small={true}>{convert(props.seconds)}  {`${isOpen ? `pid:${props.pid}` : ""}`}</AppDetailText>
+                    <AppDetailText opacity="0.5" small={true}>{convert(props.seconds)}  {`${props.isOpen ? `pid:${props.pid}` : ""}`}</AppDetailText>
                 </AppDetailTextGroup>
 
                 <AppDetailTextGroup>

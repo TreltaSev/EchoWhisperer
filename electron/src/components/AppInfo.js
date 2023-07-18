@@ -56,7 +56,7 @@ const _bwatch = class {
 {/* App Info Component */}
 const AppInfo = (props) => {
     const [__, ___] = useState(null);
-    const _loggerActive = new _bwatch(false);
+    const _loggerActive = new _bwatch(props.isConnected);
     const _loggerInstalled = new _bwatch(true);
     const _allGud = new _bwatch(true); 
     const [_runningTicker, _setRunningTicker] = useState(0);

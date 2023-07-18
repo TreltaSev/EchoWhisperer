@@ -39,18 +39,17 @@ const App = () => {
         setSocket(null);
         setIsConnected(false);
         console.log('Attempting to reconnect...');
-        setTimeout(createWebSocket, 3000); // Retry connection after 3 seconds
+        setTimeout(createWebSocket, 3000);
         clearInterval(interval);
       };
 
       newSocket.onerror = () => {
         console.error('WebSocket connection error');
+        setIsConnected(false);
         clearInterval(interval);
-        // Handle WebSocket connection error
       };
 
       newSocket.onmessage = (event) => {
-        // Handle received messages
         try {
           const data = JSON.parse(event.data);
           console.log(data)
@@ -77,20 +76,19 @@ const App = () => {
       }
     };
   }, []);
-
     
-    return (
-        <div className={`${styling.flex_col} ${styling.align_items_center} ${styling.dark_main} ${styling.flex_fill_all}`}>
-          
-          { /* Navigation Menu holds all the buttons */ }
-          <NavigationBar/>
-          <div style={{maxHeight: 545, minHeight: 545}} className={`${styling.flex_row} ${styling.align_items_start} ${styling.justify_content_start} ${styling.align_self_stretch} ${styling.justify_self_stretch}`}>
-            <AppList entries={entries} socket={socket}/>
-            <SortingSettings/>
-          </div>
-          <AppInfo/>
+  return (
+      <div className={`${styling.flex_col} ${styling.align_items_center} ${styling.dark_main} ${styling.flex_fill_all}`}>
+        
+        { /* Navigation Menu holds all the buttons */ }
+        <NavigationBar/>
+        <div style={{maxHeight: 545, minHeight: 545}} className={`${styling.flex_row} ${styling.align_items_start} ${styling.justify_content_start} ${styling.align_self_stretch} ${styling.justify_self_stretch}`}>
+          <AppList entries={entries} socket={socket}/>
+          <SortingSettings/>
         </div>
-    );
+        <AppInfo isConnected={isConnected}/>
+      </div>
+  );
 }
 
 export default App;
