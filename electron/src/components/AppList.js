@@ -4,7 +4,7 @@
  * 
  * @returns 
  */
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styling from "@assets/styling.module.css";
 import custom_styling from "@assets/custom.module.css"
 
@@ -13,7 +13,7 @@ const AppDetailText = (props) => {
     const _opacity = props.opacity !== undefined ? props.opacity : "1";
     const _small = props.small !== undefined ? props.small : false;
     return (
-        <span style={{opacity: _opacity, color: _color}} className={`${_small ? styling.text_s : styling.text_m}`}>
+        <span style={{opacity: _opacity, color: _color, maxWidth: 80, wordWrap: "break-word"}} className={`${_small ? styling.text_s : styling.text_m}`}>
             {props.children}
         </span>
     )
@@ -22,7 +22,7 @@ const AppDetailText = (props) => {
 const AppDetailTextGroup = (props) => {
     const _width = props.width !== undefined ? props.width : "auto";
     return (
-        <div style={{width: _width}} className={`${styling.flex_col} ${styling.align_items_start} ${styling.justify_content_start}`}>
+        <div style={{width: _width}} className={`${styling.flex_col} ${styling.align_items_start} ${styling.justify_content_start} ${styling.align_self_stretch}`}>
             {props.children}
         </div>
     )
@@ -37,7 +37,7 @@ const _swatch = class {
 }
 
 
-const AppDetailChip = (props) => {
+const AppDetailChip = (props) => {    
     const processName = props.processName !== undefined ? props.processName : "undefined.exe";
     const hours = props.hours !== undefined ? props.hours : 999;
     const isOpen = new _swatch(props.isOpen);
@@ -45,7 +45,7 @@ const AppDetailChip = (props) => {
 
 
     return (
-        <div style={{borderRadius: 10, minHeight: 40, maxWidth: 300, position: "relative"}} className={`${styling.flex_row} ${styling.align_items_center} ${styling.align_self_stretch} ${custom_styling.AppList_full_border_white}`}>
+        <div style={{borderRadius: 10, position: "relative"}} className={`${styling.flex_row} ${styling.align_items_center} ${styling.align_self_stretch} ${custom_styling.AppList_full_border_white}`}>
             { /* Left Side Chip */}
             <div className={`${custom_styling.AppList_left_side_chip}`}/>
 
@@ -74,10 +74,15 @@ const AppDetailChip = (props) => {
     )
 }
 
-const AppList = () => {
+const AppList = (props) => {
+    console.log(props)
     return (
         <div style={{minWidth: 320, padding: "30px 10px", gap:10, overflowY: "auto", overflowX: "hidden"}} className={`${styling.flex_col} ${styling.align_items_center} ${styling.border_box} ${styling.flex_fill_height} ${styling.dark_sub} ${styling.border_right} ${styling.dark_accent} ${styling.scroll}`}>
-            <AppDetailChip processName="discord.exe" hours={232} isOpen={true} isApplication={true}/>
+            {
+                props.entries !== [] ? Object.entries(props.entries).map(([k, s], i) => (
+                    <AppDetailChip key={`${s.name}__`} processName={s.name} hours={s.time} isOpen={true} isApplication={false}/>
+                )) : <></>
+            }
         </div>
     )
 }

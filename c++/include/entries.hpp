@@ -45,9 +45,42 @@ class Entries{
         void clockUpdate(const std::string entryName, int Pid);
         TypeOneResponse find(std::string entryName);
         TypeOneResponse read(std::ifstream& file);
+        std::vector<Entry> readEntries();
         
 
 };
+
+
+std::vector<Entry> Entries::readEntries() {
+    std::ifstream file(this->fileName, std::ios::binary);
+    std::vector<Entry> entries;
+    if (file)
+    {        
+        while (true)
+        {
+            int nameSize;
+            int time;
+            int isApplication;
+            int pid;
+
+            if (!file.read(reinterpret_cast<char*>(&nameSize), sizeof(nameSize))) {
+                break;
+            };
+
+            std::string name(nameSize, '\0');
+            file.read(&name[0], nameSize);
+            file.read(reinterpret_cast<char*>(&time), sizeof(time));
+            file.read(reinterpret_cast<char*>(&isApplication), sizeof(isApplication));
+            file.read(reinterpret_cast<char*>(&pid), sizeof(pid));
+
+            Entry entry{std::move(name), time, isApplication, pid};
+            entries.push_back(entry);
+        }
+        file.close();
+    }
+    return entries;
+    
+}
 
 void Entries::updateBulk(int amount)
 {
