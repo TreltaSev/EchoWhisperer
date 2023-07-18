@@ -9,6 +9,7 @@
 #include <windows.h>
 #include <TlHelp32.h>
 #include <vector>
+#include <cstring>
 
 const char* cGREEN = "<38;2;132;210;71}";
 const char* cBLUE = "<38;2;89;111;226}";
@@ -33,19 +34,20 @@ std::wstring CharToWString(const char* text)
 }
 
 /* Check if process already inside a vector. */
-bool process_check(std::vector<std::wstring> vec, std::wstring tocheck)
+bool process_check(std::vector<PROCESSENTRY32> vec, PROCESSENTRY32 tocheck)
 {
-    auto it = std::find(vec.begin(), vec.end(), tocheck);
-    if (it != vec.end()) {
-        return true;
-    }
+    for (const auto& process : vec) {        
+        if (strcmp(process.szExeFile, tocheck.szExeFile) == 0) {            
+            return true;
+        }
+    }    
     return false;
 }
 
 /* Get all running processes as a wstring*/
-std::vector<std::wstring> get_running_processes()
+std::vector<PROCESSENTRY32> get_running_processes()
 {
-    std::vector<std::wstring> processes;
+    std::vector<PROCESSENTRY32> processes;
     HANDLE snapshot = CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0);
     PROCESSENTRY32 processEntry;
     processEntry.dwSize = sizeof(PROCESSENTRY32);
@@ -56,9 +58,9 @@ std::vector<std::wstring> get_running_processes()
     }
     do
     {
-        if (!process_check(processes, CharToWString(processEntry.szExeFile)))
+        if (!process_check(processes, processEntry))
         {
-            processes.push_back(CharToWString(processEntry.szExeFile));
+            processes.push_back(processEntry);
         }
     } while (Process32Next(snapshot, &processEntry));
 

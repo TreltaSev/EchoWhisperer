@@ -30,11 +30,12 @@ void listenerLoop() {
         auto start = std::chrono::high_resolution_clock::now(); 
         bcolors().send("%s[ Log ] %sTick...", cvlBlue, cvlOrange);
         Entries entries("bin/entries.bin");  
-        std::vector<std::wstring> processes = get_running_processes();
-        for (const std::wstring& process : processes)
+        std::vector<PROCESSENTRY32> processes = get_running_processes();
+        for (const auto& process : processes)
         {
-            std::wstring_convert<std::codecvt_utf8<wchar_t>> converter;
-            std::string converted = converter.to_bytes(process);
+            std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
+            std::wstring wideString = converter.from_bytes(process.szExeFile);
+            std::string converted(wideString.begin(), wideString.end());
             Entry entry{converted, 0, 0};
             entries.addifnotexists(entry);
         }
