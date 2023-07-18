@@ -9,6 +9,8 @@
 #include <windows.h>
 #include <TlHelp32.h>
 #include <vector>
+#include <string>
+#include <psapi.h>
 
 
 const char* cvlGreen = "\u100b[38;2;132;210;71m";
@@ -17,6 +19,44 @@ const char* cvlOrange = "\u100b[38;2;246;145;51m";
 const char* cvlBlue = "\u100b[38;2;51;191;246m";
 const char* cvlReset = "\u001b[0;38;48m";
 
+
+struct ProcessInfo {
+    std::string name;
+    unsigned long id;
+};
+
+/**
+ * Checks if a process exists inside the processInfo vector, returns a boolean.
+*/
+bool processExists(const std::vector<ProcessInfo>& processes, const std::string& processName) {
+    for (const auto& process : processes) {
+        if (process.name == processName) {
+            return true;
+        }
+    }
+    return false;
+}
+
+/**
+ * EnumWindows Helper, helps add processes into the processInfo vector
+*/
+bool __stdcall EnumProcessProc(HWND wHandle, LPARAM lParameter) {
+    unsigned long processID;
+    GetWindowThreadProcessId(wHandle, &processID);
+    HANDLE processHandle = OpenProcess(PROCESS_QUERY_INFORMATION | PROCESS_VM_READ, FALSE, processID);
+    if (processHandle != NULL) {
+        char processName[MAX_PATH];
+        if (GetModuleBaseName(processHandle, NULL, processName, sizeof(processName)) != 0) {
+            auto processes = reinterpret_cast<std::vector<ProcessInfo>*>(lParameter);
+            std::string processNameStr(processName);
+            if (!processExists(*processes, processNameStr)) {
+                processes->push_back({ processNameStr, processID });
+            }
+        }
+        CloseHandle(processHandle);
+    }
+    return true;
+}
 
 /* Convert a Char object to a WString object*/
 std::wstring CharToWString(const char* text)

@@ -28,6 +28,7 @@ class TypeOneResponse {
         int pid;
         std::string name;
         bool failed = false;
+        std::string errmsg;
 };
 
 class Entries{
@@ -41,8 +42,10 @@ class Entries{
         void saveBulk(std::vector<Entry>& entries);
         bool exists(std::string);
         bool addifnotexists(Entry& entry);
+        void clockUpdate(const std::string entryName, int Pid);
         TypeOneResponse find(std::string entryName);
         TypeOneResponse read(std::ifstream& file);
+        
 
 };
 
@@ -121,9 +124,39 @@ bool Entries::exists(std::string entryName)
     return false;
 }
 
+void Entries::clockUpdate(const std::string entryName, int NewPid){
+    std::fstream file(this->fileName, std::ios::binary | std::ios::in | std::ios::out);
+
+    if (file) {
+        while (true) {
+            int nameSize;
+            int time;
+            int isApplication;
+            int pid;
+            if (!file.read(reinterpret_cast<char*>(&nameSize), sizeof(nameSize))) break;
+            std::string name(nameSize, '\0');
+            file.read(&name[0], nameSize);
+            std::streampos timePosition = file.tellg();
+            if (!file.read(reinterpret_cast<char*>(&time), sizeof(time))) break;
+            if (!file.read(reinterpret_cast<char*>(&isApplication), sizeof(isApplication))) break;
+            std::streampos pidPosition = file.tellg();
+            if (!file.read(reinterpret_cast<char*>(&pid), sizeof(pid))) break;
+            if (name == entryName) {
+                file.seekp(timePosition);
+                int NewTime = time + 5;
+                file.write(reinterpret_cast<const char*>(&NewTime), sizeof(NewTime));
+                file.seekp(pidPosition);
+                file.write(reinterpret_cast<const char*>(&NewPid), sizeof(NewPid));
+                break;
+            }
+        }
+    }
+
+    file.close();
+}
+
 bool Entries::addifnotexists(Entry& entry){
     if (this->exists(entry.name)) {
-        printf("[Entry] Skipped \"%s\"\n", entry.name.c_str());
         return false;
     }
     
@@ -154,7 +187,11 @@ TypeOneResponse Entries::find(std::string entryName){
         while (true)
         {
             int nameSize;
-            if (!file.read(reinterpret_cast<char*>(&nameSize), sizeof(nameSize))) break;
+            if (!file.read(reinterpret_cast<char*>(&nameSize), sizeof(nameSize))) {
+                typeResponse.failed = true;
+                typeResponse.errmsg = "EndOfFile, Not Found...";
+                break;
+            };
             std::string name(nameSize, '\0');
             file.read(&name[0], nameSize);
             int time;

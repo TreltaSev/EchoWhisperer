@@ -8,18 +8,13 @@
 #ifndef LISTENER_HPP
 #define LISTENER_HPP
 
+
 #include <iostream>
-#include <windows.h>
-#include <TlHelp32.h>
 #include <vector>
 #include <cstdio>
 #include <string>
-#include <algorithm>
-#include <locale>
-#include <codecvt>
 #include <chrono>
 #include <thread>
-#include <sstream>
 #include "helpers.hpp"
 #include "entries.hpp"
 
@@ -27,15 +22,15 @@ void listenerLoop() {
     while (true)
     {
         auto start = std::chrono::high_resolution_clock::now(); 
-        printf("[ Log ] Tick...\n");
         Entries entries("bin/entries.bin");  
-        std::vector<PROCESSENTRY32> processes = get_running_processes();
+        std::vector<ProcessInfo> processes;
+        EnumWindows(reinterpret_cast<WNDENUMPROC>(EnumProcessProc), reinterpret_cast<LPARAM>(&processes));
         for (const auto& process : processes)
         {
-            int pid = static_cast<int>(process.th32ProcessID);
-            Entry entry{process.szExeFile, 0, 0, pid};
-            entries.Add(entry);
-            entries.ClockUpdate(entry.name, pid);
+            int pid = static_cast<int>(process.id);
+            Entry entry{process.name, 0, 0, pid};
+            entries.addifnotexists(entry);
+            entries.clockUpdate(entry.name, pid);
         }
         auto end = std::chrono::high_resolution_clock::now(); 
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
