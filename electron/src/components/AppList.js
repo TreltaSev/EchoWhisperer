@@ -80,7 +80,7 @@ const AppList = (props) => {
         <div style={{minWidth: 320, padding: "30px 10px", gap:10, overflowY: "auto", overflowX: "hidden"}} className={`${styling.flex_col} ${styling.align_items_center} ${styling.border_box} ${styling.flex_fill_height} ${styling.dark_sub} ${styling.border_right} ${styling.dark_accent} ${styling.scroll}`}>
             {
                 props.entries !== [] ? Object.entries(props.entries).map(([k, s], i) => (
-                    <AppDetailChip key={`${s.name}__`} processName={s.name} hours={s.time} isOpen={true} isApplication={false}/>
+                    <AppDetailChip key={`${s.name}__`} processName={s.name} hours={s.time} isOpen={s.isOpen} isApplication={false}/>
                 )) : <></>
             }
         </div>
