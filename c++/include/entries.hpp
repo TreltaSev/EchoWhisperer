@@ -45,6 +45,7 @@ class Entries{
         void clockUpdate(const std::string entryName, int Pid);
         TypeOneResponse find(std::string entryName);
         TypeOneResponse read(std::ifstream& file);
+        void setIsFavorite(std::string entryName, int isFavorite);
         std::vector<Entry> readEntries();
         
 
@@ -266,4 +267,31 @@ TypeOneResponse Entries::read(std::ifstream& file) {
     return typeResponse;
 }
 
+void Entries::setIsFavorite(std::string entryName, int _isFavorite) {
+    std::fstream file(this->fileName, std::ios::binary | std::ios::in | std::ios::out);
+    if (file) {
+        while (true) {
+            int nameSize;
+            int time;
+            int isFavorite;
+            int pid;
+            if (!file.read(reinterpret_cast<char*>(&nameSize), sizeof(nameSize))) break;
+            std::string name(nameSize, '\0');
+            file.read(&name[0], nameSize);
+
+            if (!file.read(reinterpret_cast<char*>(&time), sizeof(time))) break;
+            std::streampos isFavoritePos = file.tellg();
+            if (!file.read(reinterpret_cast<char*>(&isFavorite), sizeof(isFavorite))) break;
+            if (!file.read(reinterpret_cast<char*>(&pid), sizeof(pid))) break;
+            
+            if (name == entryName) {
+                file.seekp(isFavoritePos);
+                file.write(reinterpret_cast<const char*>(&_isFavorite), sizeof(_isFavorite));
+                std::cout << "Set: " << isFavorite << " ||| " << _isFavorite << std::endl;
+                break;
+            }
+        }
+    }
+    file.close();
+}
 #endif

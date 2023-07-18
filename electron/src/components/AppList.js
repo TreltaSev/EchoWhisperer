@@ -7,13 +7,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import styling from "@assets/styling.module.css";
 import custom_styling from "@assets/custom.module.css"
+import { undefinedCheck } from "./global";
+import { Star } from "../assets/icons";
 
 const AppDetailText = (props) => {
     const _color = props.color !== undefined ? props.color : "#ECF1FF";
     const _opacity = props.opacity !== undefined ? props.opacity : "1";
     const _small = props.small !== undefined ? props.small : false;
     return (
-        <span style={{opacity: _opacity, color: _color, maxWidth: 80, wordWrap: "break-word"}} className={`${_small ? styling.text_s : styling.text_m}`}>
+        <span style={{opacity: _opacity, color: _color, maxWidth: 120, wordWrap: "break-word"}} className={`${_small ? styling.text_s : styling.text_m}`}>
             {props.children}
         </span>
     )
@@ -28,8 +30,24 @@ const AppDetailTextGroup = (props) => {
     )
 }
 
+const FavoriteButton = (props) => {
+    const _favorite = undefinedCheck(props.favorite, false);
+
+    const toggle = () => {
+        console.log(props);
+        props.socket.send(JSON.stringify({type: "set?", entry: props.name, value: !_favorite == true ? 1 : 0}));
+    }
+
+    return (
+        <div onClick={() => toggle()} style={{minWidth: 20, minHeight: 20, marginLeft: "auto", borderRadius: "50%", border: "1px solid #ECF1FF", backgroundColor: _favorite ? "#2880D2" : "transparent"}} className={`${styling.flex_col} ${styling.align_items_center} ${styling.justify_content_center}`}>
+            <Star opacity={_favorite ? "1" : "0.5"}/>
+        </div>
+    )
+}
+
 const _swatch = class {
     constructor (bool) {
+        bool = bool == 1 ? true : false;
         bool = bool !== undefined ? bool : false;
         this.text = bool === true ? "True" : "False";
         this.color = bool === true ? "#52FF59" : "#F43944";
@@ -41,6 +59,7 @@ const AppDetailChip = (props) => {
     const processName = props.processName !== undefined ? props.processName : "undefined.exe";
     const isOpen = new _swatch(props.isOpen);
     const isFavorite = new _swatch(props.isFavorite);
+    const checkIsFavorite = props.isFavorite == 1 ? true : false;
 
     const convert = (seconds) => {
         if (seconds >= 3600) {
@@ -61,7 +80,7 @@ const AppDetailChip = (props) => {
 
             { /* Content */}
             <div style={{padding: 10, gap: 15}} className={`${styling.flex_row} ${styling.align_items_center} ${styling.border_box} ${styling.flex_fill_all}`}>
-                <AppDetailTextGroup width={80}>
+                <AppDetailTextGroup width={120}>
                     <AppDetailText>
                         {processName}
                     </AppDetailText>
@@ -78,8 +97,8 @@ const AppDetailChip = (props) => {
                     <AppDetailText color={isFavorite.color}>{isFavorite.text}</AppDetailText>
                 </AppDetailTextGroup>
 
+                <FavoriteButton name={processName} socket={props.socket} favorite={checkIsFavorite}/>
             </div>
-
         </div>
     )
 }
@@ -90,7 +109,7 @@ const AppList = (props) => {
         <div style={{minWidth: 320, padding: "30px 10px", gap:10, overflowY: "auto", overflowX: "hidden"}} className={`${styling.flex_col} ${styling.align_items_center} ${styling.border_box} ${styling.flex_fill_height} ${styling.dark_sub} ${styling.border_right} ${styling.dark_accent} ${styling.scroll}`}>
             {
                 props.entries !== [] ? Object.entries(props.entries).map(([k, s], i) => (
-                    <AppDetailChip key={`${s.name}__`} processName={s.name} seconds={s.time} isOpen={s.isOpen} isFavorite={false} pid={s.pid}/>
+                    <AppDetailChip socket={props.socket} key={`${s.name}__`} processName={s.name} seconds={s.time} isOpen={s.isOpen} isFavorite={s.isFavorite} pid={s.pid}/>
                 )) : <></>
             }
         </div>

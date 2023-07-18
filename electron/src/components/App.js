@@ -12,20 +12,26 @@ const App = () => {
   const [socket, setSocket] = useState(null);  
   const [isConnected, setIsConnected] = useState(false);
   const [entries, setEntries] = useState([]);
-  const returnMainData = () => {
-    return MainData;
-  }
-
+  
   useEffect(() => {
     const createWebSocket = () => {
       
       const newSocket = new WebSocket('ws://127.0.0.1:2411');
 
+      let interval = 0;
+
       newSocket.onopen = () => {
         console.log('WebSocket connected');
-        newSocket.send("get?");
+        newSocket.send(JSON.stringify({type: "get?"}));
         setSocket(newSocket);
         setIsConnected(true);
+
+        interval = setInterval(() => {
+          if (newSocket !== null) {
+            newSocket.send(JSON.stringify({type: "get?"}));
+          }
+        }, 1000)
+
       };
 
       newSocket.onclose = () => {
@@ -34,10 +40,12 @@ const App = () => {
         setIsConnected(false);
         console.log('Attempting to reconnect...');
         setTimeout(createWebSocket, 3000); // Retry connection after 3 seconds
+        clearInterval(interval);
       };
 
       newSocket.onerror = () => {
         console.error('WebSocket connection error');
+        clearInterval(interval);
         // Handle WebSocket connection error
       };
 
@@ -48,8 +56,9 @@ const App = () => {
           console.log(data)
 
           if (data["type"] == "get?") {
-            setEntries(data["entries"]);
-            console.log("Set Main Data");
+            setEntries(data["entries"]);            
+          } else if (data["type"] == "set?") {
+            newSocket.send(JSON.stringify({type: "get?"}));
           }
 
         } catch (e) {
@@ -59,10 +68,10 @@ const App = () => {
       };
     };
 
-    createWebSocket();
+    createWebSocket();    
 
     return () => {
-      // Cleanup: close WebSocket connection when the component unmounts
+      clearInterval(interval);
       if (socket) {
         socket.close();
       }
@@ -76,7 +85,7 @@ const App = () => {
           { /* Navigation Menu holds all the buttons */ }
           <NavigationBar/>
           <div style={{maxHeight: 545, minHeight: 545}} className={`${styling.flex_row} ${styling.align_items_start} ${styling.justify_content_start} ${styling.align_self_stretch} ${styling.justify_self_stretch}`}>
-            <AppList entries={entries}/>
+            <AppList entries={entries} socket={socket}/>
             <SortingSettings/>
           </div>
           <AppInfo/>

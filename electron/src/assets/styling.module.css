@@ -113,6 +113,10 @@ span {
     align-self: stretch;
 }
 
+.align_self_end {
+    align-self: end;
+}
+
 /* Justify Content Types */
 .justify_content_start {
     justify-content: start;
@@ -128,6 +132,10 @@ span {
 
 .justify_self_stretch {
     justify-self: stretch;
+}
+
+.justify_self_end {
+    justify-self: end;
 }
 
 /* Fill Types */

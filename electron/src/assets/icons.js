@@ -5,6 +5,16 @@
  * @returns 
  */
 import React from "react";
+import { undefinedCheck } from "../components/global";
+
+export const Star = (props) => {
+    const _opacity = undefinedCheck(props.opacity, "1")
+    return (
+        <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
+            <path d="M3.49026 7.54646L5.00029 6.6386L6.52075 7.5573L6.10409 5.84897L7.43742 4.69272L5.68742 4.54689L4.99992 2.9323L4.32284 4.53647L2.57284 4.6823L3.91005 5.8284L3.49026 7.54646ZM2.06242 9.52605L2.84367 6.19272L0.239502 3.9323L3.67284 3.64279L4.99992 0.473969L6.33742 3.64279L9.76034 3.9323L7.15617 6.19272L7.94784 9.52605L4.99992 7.7448L2.06242 9.52605Z" fill="#ECF1FF" fillOpacity={_opacity}/>
+        </svg>
+    )
+}
 
 export const LogoIcon = () => {
     return (

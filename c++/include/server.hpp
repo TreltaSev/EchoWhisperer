@@ -54,6 +54,17 @@ std::string getEntries() {
     return jsonString;
 }
 
+std::string updateIsFavorite(std::string entryName, int value) {
+    Entries hEntries("bin/entries.bin");
+    hEntries.setIsFavorite(entryName, value);
+    nlohmann::json response;
+    response["type"] = "set?";
+    response["extra"] = "(" + entryName + ") Was Set Successfully to: " + (value==1 ? "1" : "0");
+    std::string jsonString = response.dump();
+    return jsonString;
+}
+
+
 void serverLoop() {
     // Port and Address
     auto const address = boost::asio::ip::make_address("127.0.0.1");
@@ -92,13 +103,14 @@ void serverLoop() {
 
                         std::string response;
 
-                        if (out == "open?") {
-                            response = "yes";
-                        } else if (out == "get?") {
+                        nlohmann::json request = nlohmann::json::parse(out);
+                        std::string request_type = request["type"];
+
+                        if (request_type == "get?") {
                             response = getEntries();
-                        } else {
-                            response = "???";
-                        }
+                        } else if (request_type == "set?") {
+                            response = updateIsFavorite(request["entry"], request["value"]);
+                        }                        
 
                         WebSocketStream.write(boost::asio::buffer(response));
                     }
