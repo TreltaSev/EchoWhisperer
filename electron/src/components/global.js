@@ -25,6 +25,21 @@ export const undefinedCheck = (_val, _default) => {
     return _val;
 }
 
+/**
+ * Basic Text component which can be utilized and customized by passing in props
+ * These props include:
+ * 
+ * `color<string>` Color in [hex](https://en.wikipedia.org/wiki/Web_colors) or [rgb](https://en.wikipedia.org/wiki/RGB_color_model) representation such as #fff #ffffff or rgb(255,255,255) or rgba(255,255,255,1) or hsl etc etc.
+ * as long as it works with a [color property](https://developer.mozilla.org/en-US/docs/Web/CSS/color) in css, it works here you can see common examples of some color codes [here](https://developer.mozilla.org/en-US/docs/Web/CSS/color#making_text_red) *Defaults to `string: "#e2efff"`*
+ * 
+ * `opacity<string>` opacity in a [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) format formed like this: `"1.0"` represeting a one opacity or 100%, can also be inputed as `"1"` and even "100%". *Defaults to `string: "1"`*
+ * 
+ * `size<int>` an [integer](https://developer.mozilla.org/en-US/docs/Web/CSS/integer) representation of the font size in pixels, im pretty sure you can also use a [string](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String) here. can either input a number like `int: (1)` (value in parenthesis) or `string: ("0.2em")` (value in parenthesis) *Defaults to `int: 10`*
+ * 
+ * `fontFamily<string>` Literally just the name of the font, as of right now the documented fontFamilies are `Lato` and `LatoItalic` *Defaults to `string: "Lato"`*
+ * @param {*} props 
+ * @returns 
+ */
 export const Text = (props) => {   
 
     const _color = undefinedCheck(props.color, "#e2efff");

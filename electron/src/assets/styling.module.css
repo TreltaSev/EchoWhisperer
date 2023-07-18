@@ -9,8 +9,14 @@
 /* Lato Font */
 @font-face {
     font-family: "Lato";
-    src: url("./regular.ttf") format("ttf");
+    src: url("./fonts/lato-regular.woff2") format("woff2");
 }
+
+@font-face {
+    font-family: "LatoItalic";
+    src: url("./fonts/lato-italic.woff2") format("woff2");
+}
+
 
 html, body {
     height: 100%;
