@@ -64,6 +64,15 @@ std::string updateIsFavorite(std::string entryName, int value) {
     return jsonString;
 }
 
+std::string deleteSpecificEntry(std::string entryName) {
+    Entries hEntries("bin/entries.bin");
+    bool deleteAttempt = hEntries.deleteEntry(entryName);
+    nlohmann::json response;
+    response["type"] = "delete?";
+    response["extra"] = "(" + entryName + ") Succeeded in deleting?: " + (deleteAttempt == true ? "True" : "False");
+    return response.dump();
+}
+
 
 void serverLoop() {
     // Port and Address
@@ -110,7 +119,9 @@ void serverLoop() {
                             response = getEntries();
                         } else if (request_type == "set?") {
                             response = updateIsFavorite(request["entry"], request["value"]);
-                        }                        
+                        } else if (request_type == "delete?") {
+                            response = deleteSpecificEntry(request["entry"]);
+                        }
 
                         WebSocketStream.write(boost::asio::buffer(response));
                     }

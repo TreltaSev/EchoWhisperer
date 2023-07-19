@@ -4,11 +4,12 @@
  * 
  * @returns 
  */
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, useRef } from "react";
 import styling from "@assets/styling.module.css";
 import custom_styling from "@assets/custom.module.css"
-import { undefinedCheck } from "./global";
-import { Star } from "../assets/icons";
+import { CloseIcon, Star } from "@assets/icons";
+import { dark_red } from "@assets/colors";
+import { undefinedCheck } from "@components/global";
 
 const AppDetailText = (props) => {
     const _color = props.color !== undefined ? props.color : "#ECF1FF";
@@ -45,6 +46,20 @@ const FavoriteButton = (props) => {
     )
 }
 
+const DeleteButton = (props) => {
+    const toggle = () => {
+        console.log(props);
+        // delete
+        props.socket.send(JSON.stringify({type: "delete?", entry: props.name}));
+    }
+
+    return (
+        <div onClick={() => toggle()} style={{height: 20, width: 20, resize: "none", backgroundColor: dark_red, borderRadius: 5}} className={`${styling.flex_col} ${styling.align_items_center} ${styling.justify_content_center}`}>
+            <CloseIcon/>
+        </div>
+    )
+}
+
 const _swatch = class {
     constructor (bool) {
         bool = bool == 1 ? true : false;
@@ -60,6 +75,17 @@ const AppDetailChip = (props) => {
     const isOpen = new _swatch(props.isOpen);
     const isFavorite = new _swatch(props.isFavorite);
     const checkIsFavorite = props.isFavorite == 1 ? true : false;
+    const RightSideSwatch = useRef(null);
+
+    const mouseEnter = () => {
+        console.log(RightSideSwatch);
+        RightSideSwatch.current.classList.add(custom_styling.AppList_right_side_close_active);
+    }
+
+    const mouseLeave = () => {
+        console.log(RightSideSwatch);
+        RightSideSwatch.current.classList.remove(custom_styling.AppList_right_side_close_active);
+    }
 
     const convert = (seconds) => {
         if (seconds >= 3600) {
@@ -74,12 +100,15 @@ const AppDetailChip = (props) => {
     }
 
     return (
-        <div style={{borderRadius: 10, position: "relative"}} className={`${styling.flex_row} ${styling.align_items_center} ${styling.align_self_stretch} ${custom_styling.AppList_full_border_white}`}>
+        <div onMouseEnter={() => mouseEnter()} onMouseLeave={() => mouseLeave()} style={{position: "relative", zIndex: 5}} className={`${styling.flex_row} ${styling.align_items_center} ${styling.align_self_stretch}`}>
             { /* Left Side Chip */}
-            <div className={`${custom_styling.AppList_left_side_chip}`}/>
+            <div style={{zIndex: 3}} className={`${custom_styling.AppList_left_side_chip}`}/>
+            <div ref={RightSideSwatch} style={{zIndex: 1}} className={`${custom_styling.AppList_right_side_close} ${styling.dark_sub} ${styling.flex_col} ${styling.align_items_center} ${styling.justify_content_center}`}>
+                <DeleteButton name={processName} socket={props.socket}/>
+            </div>
 
             { /* Content */}
-            <div style={{padding: 10, gap: 15}} className={`${styling.flex_row} ${styling.align_items_center} ${styling.border_box} ${styling.flex_fill_all}`}>
+            <div style={{padding: 10, gap: 15, zIndex: 2, borderRadius: 10}} className={`${styling.flex_row} ${styling.align_items_center} ${styling.border_box} ${styling.flex_fill_all} ${custom_styling.AppList_full_border_white} ${styling.dark_sub}`}>
                 <AppDetailTextGroup width={120}>
                     <AppDetailText>
                         {processName}
@@ -99,6 +128,8 @@ const AppDetailChip = (props) => {
 
                 <FavoriteButton name={processName} socket={props.socket} favorite={checkIsFavorite}/>
             </div>
+
+            
         </div>
     )
 }

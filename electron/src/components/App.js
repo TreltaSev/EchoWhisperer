@@ -58,6 +58,8 @@ const App = () => {
             setEntries(data["entries"]);            
           } else if (data["type"] == "set?") {
             newSocket.send(JSON.stringify({type: "get?"}));
+          } else if (data["type"] == "delete?") {
+            newSocket.send(JSON.stringify({type: "get?"}));
           }
 
         } catch (e) {

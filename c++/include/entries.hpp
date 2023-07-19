@@ -46,6 +46,7 @@ class Entries{
         TypeOneResponse find(std::string entryName);
         TypeOneResponse read(std::ifstream& file);
         void setIsFavorite(std::string entryName, int isFavorite);
+        bool deleteEntry(std::string entryName);
         std::vector<Entry> readEntries();
         
 
@@ -105,7 +106,7 @@ void Entries::updateBulk(int amount)
             int pid;
             file.read(reinterpret_cast<char*>(&pid), sizeof(pid));
             time += amount;
-            Entry entry{std::move(name), time, isFavorite};
+            Entry entry{std::move(name), time, isFavorite, pid};
             entries.push_back(entry);
         }
         file.close();
@@ -293,5 +294,37 @@ void Entries::setIsFavorite(std::string entryName, int _isFavorite) {
         }
     }
     file.close();
+}
+
+bool Entries::deleteEntry(std::string entryName) {
+    std::ifstream file(this->fileName, std::ios::binary);
+
+    if (file)
+    {
+        std::vector<Entry> entries;
+        while (true)
+        {
+            int nameSize;
+            int time;
+            int isFavorite;
+            int pid;
+            if (!file.read(reinterpret_cast<char*>(&nameSize), sizeof(nameSize))) {
+                break;
+            };
+            std::string name(nameSize, '\0');
+            file.read(&name[0], nameSize);            
+            file.read(reinterpret_cast<char*>(&time), sizeof(time));            
+            file.read(reinterpret_cast<char*>(&isFavorite), sizeof(isFavorite));            
+            file.read(reinterpret_cast<char*>(&pid), sizeof(pid));
+            Entry entry{std::move(name), time, isFavorite, pid};
+            if (entry.name != entryName) {
+                entries.push_back(entry);
+            }            
+        }
+        file.close();
+        this->saveBulk(entries);
+        return true;
+    }
+    return false;
 }
 #endif

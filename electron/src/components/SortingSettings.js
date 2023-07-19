@@ -24,7 +24,13 @@ const SortingSettings = () => {
             <Setting>
                 <Text size={14}>Sort By Name</Text>
                 <Text size={12} color="rgba(236, 241, 255, 0.5)">Lists out all applications and sorts by name meaning it follows the abc rule :).</Text>
-                <Text size={10} color="#2880D2" fontFamily="LatoItalic" opacity="1">Can work with Prioritize Application</Text>
+                <Text size={10} color="#2880D2" fontFamily="LatoItalic" opacity="1">Works With Prioritize Application, Turns off Sort By Time</Text>
+            </Setting>
+
+            <Setting>
+                <Text size={14}>Sort By Time</Text>
+                <Text size={12} color="rgba(236, 241, 255, 0.5)">Lists out all applications and sorts by Time, greatest at the top to least at the bottom.</Text>
+                <Text size={10} color="#2880D2" fontFamily="LatoItalic" opacity="1">Works With Prioritize Application, Turns off Sort By Name</Text>
             </Setting>
 
             <Setting>
