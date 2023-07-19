@@ -15,8 +15,9 @@ const AppDetailText = (props) => {
     const _color = props.color !== undefined ? props.color : "#ECF1FF";
     const _opacity = props.opacity !== undefined ? props.opacity : "1";
     const _small = props.small !== undefined ? props.small : false;
+    
     return (
-        <span style={{opacity: _opacity, color: _color, maxWidth: 120, wordWrap: "break-word"}} className={`${_small ? styling.text_s : styling.text_m}`}>
+        <span style={{opacity: _opacity, color: _color, ...props.style_extra}} className={`${_small ? styling.text_s : styling.text_m}`}>
             {props.children}
         </span>
     )
@@ -24,8 +25,9 @@ const AppDetailText = (props) => {
 
 const AppDetailTextGroup = (props) => {
     const _width = props.width !== undefined ? props.width : "auto";
+    const _spec = undefinedCheck(props.spec, false);
     return (
-        <div style={{width: _width}} className={`${styling.flex_col} ${styling.align_items_start} ${styling.justify_content_start} ${styling.align_self_stretch}`}>
+        <div style={{width: _width, ...props.style_extra}} className={`${styling.flex_col} ${styling.align_items_start} ${styling.justify_content_start}`}>
             {props.children}
         </div>
     )
@@ -108,13 +110,15 @@ const AppDetailChip = (props) => {
             </div>
 
             { /* Content */}
-            <div style={{padding: 10, gap: 15, zIndex: 2, borderRadius: 10}} className={`${styling.flex_row} ${styling.align_items_center} ${styling.border_box} ${styling.flex_fill_all} ${custom_styling.AppList_full_border_white} ${styling.dark_sub}`}>
-                <AppDetailTextGroup width={120}>
-                    <AppDetailText>
+            <div style={{padding: 10, gap: 15, zIndex: 2, borderRadius: 10}} className={`${styling.flex_row} ${styling.align_items_center} ${styling.border_box} ${styling.flex_fill_all} ${custom_styling.AppList_full_border_white} ${styling.dark_sub} ${styling.justify_content_end}`}>
+                <AppDetailTextGroup width="100%">
+                    <AppDetailText style_extra={{maxWidth: "100%", display: "block", overflowWrap: "anywhere"}}>
                         {processName}
                     </AppDetailText>
                     <AppDetailText opacity="0.5" small={true}>{convert(props.seconds)}  {`${props.isOpen ? `pid:${props.pid}` : ""}`}</AppDetailText>
                 </AppDetailTextGroup>
+
+                <div style={{flex: "1 0 0", alignSelf: "stretch"}}/>
 
                 <AppDetailTextGroup>
                     <AppDetailText>Open</AppDetailText>
@@ -137,7 +141,7 @@ const AppDetailChip = (props) => {
 const AppList = (props) => {
     console.log(props)
     return (
-        <div style={{minWidth: 320, padding: "30px 10px", gap:10, overflowY: "auto", overflowX: "hidden"}} className={`${styling.flex_col} ${styling.align_items_center} ${styling.border_box} ${styling.flex_fill_height} ${styling.dark_sub} ${styling.border_right} ${styling.dark_accent} ${styling.scroll}`}>
+        <div style={{width: "100%", minWidth: 300, padding: "30px 10px", gap:10, overflowY: "auto", overflowX: "hidden"}} className={`${styling.flex_col} ${styling.align_items_center} ${styling.border_box} ${styling.flex_fill_height} ${styling.dark_sub} ${styling.border_right} ${styling.dark_accent} ${styling.scroll}`}>
             {
                 props.entries !== [] ? Object.entries(props.entries).map(([k, s], i) => (
                     <AppDetailChip socket={props.socket} key={`${s.name}__`} processName={s.name} seconds={s.time} isOpen={s.isOpen} isFavorite={s.isFavorite} pid={s.pid}/>

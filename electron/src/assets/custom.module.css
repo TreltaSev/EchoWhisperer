@@ -67,3 +67,8 @@
     opacity: 1;
     transform: translateY(calc(-30px));
 }
+
+.App_fill_cstm {
+    max-height: calc(100% - 55px);
+    height: calc(100% - 55px);
+}

@@ -20,7 +20,7 @@ const Setting = (props) => {
 
 const SortingSettings = () => {
     return (
-        <div style={{padding: 30, gap: 20, overflowY: "scroll"}} className={`${styling.flex_col} ${styling.flex_fill_all} ${styling.flex_align_center} ${styling.border_box} ${styling.scroll}`}>
+        <div style={{padding: 30, gap: 20, overflowY: "scroll", minWidth: 450, maxWidth: 450}} className={`${styling.flex_col} ${styling.flex_fill_height} ${styling.flex_align_center} ${styling.border_box} ${styling.scroll}`}>
             <Setting>
                 <Text size={14}>Sort By Name</Text>
                 <Text size={12} color="rgba(236, 241, 255, 0.5)">Lists out all applications and sorts by name meaning it follows the abc rule :).</Text>

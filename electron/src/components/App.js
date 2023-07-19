@@ -4,7 +4,7 @@ import AppList from "./AppList";
 import SortingSettings from "./SortingSettings";
 import NavigationBar from "@components/NavigationBar";
 import AppInfo from "./AppInfo";
-
+import custom_styling from "@assets/custom.module.css"
 
 
 
@@ -80,11 +80,11 @@ const App = () => {
   }, []);
     
   return (
-      <div className={`${styling.flex_col} ${styling.align_items_center} ${styling.dark_main} ${styling.flex_fill_all}`}>
+      <div style={{position: "relative"}} className={`${styling.flex_col} ${styling.align_items_center} ${styling.dark_main} ${styling.flex_fill_all}`}>
         
         { /* Navigation Menu holds all the buttons */ }
         <NavigationBar/>
-        <div style={{maxHeight: 545, minHeight: 545}} className={`${styling.flex_row} ${styling.align_items_start} ${styling.justify_content_start} ${styling.align_self_stretch} ${styling.justify_self_stretch}`}>
+        <div className={`${styling.flex_row} ${styling.align_items_start} ${styling.justify_content_start} ${styling.align_self_stretch} ${custom_styling.App_fill_cstm}`}>
           <AppList entries={entries} socket={socket}/>
           <SortingSettings/>
         </div>
