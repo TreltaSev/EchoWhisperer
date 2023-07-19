@@ -6,8 +6,11 @@
 *.lo
 *.o
 *.obj
+*.bin
 
 node_modules/
+nsis_build/
+
 dist/
 
 # Precompiled Headers
