@@ -9,7 +9,7 @@ export const dark_sub    = "#181818";
 export const dark_main   = "#212121";
 export const dark_white  = "#ECF1FF";
 export const dark_accent = "#1B1C25";
-export const darK_green  = "#52FF59";
+export const dark_green  = "#52FF59";
 export const dark_red    = "#F43944";
 export const dark_ult    = "#2880D2";
 

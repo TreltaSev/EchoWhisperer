@@ -6,7 +6,7 @@
  */
 import React from "react";
 import styling from "@assets/styling.module.css"
-
+const fs = require("fs")
 /**
 * Takes in a _val which is the variable to check
 * and a _default which is the default value after the undefined check.
@@ -53,3 +53,50 @@ export const Text = (props) => {
         </span>
     )
 }
+
+/**
+ * A basic method which checks files and directories and creates
+ * these files and directories if it doesnt exist.
+ * Checks for `/bin`, `/bin/settings.json`, and `/bin/entries.bin`
+ * settings.json is used by the electron portion while entries.bin is used mainly by the
+ * c++ portion of this program.
+ */
+export const fileVerify = () => {
+    if (fs.existsSync(`${__dirname}/bin/settings.json`) === false) {
+        const _baseObj = {
+            "sortbyname?" : false,
+            "sortbytime?" : false,
+            "prioritizeapplication?" : false,
+            "hideallnonapplications?" : false,
+            "hideallapplications?" : false
+        }
+        fs.mkdirSync(`${__dirname}/bin`);      
+        fs.writeFileSync(`${__dirname}/bin/settings.json`, JSON.stringify(_baseObj, null, "\t"));
+    }
+
+    if (fs.existsSync(`${__dirname}/bin/entries.bin`) === false) {
+        fs.mkdirSync(`${__dirname}/bin`); 
+        fs.writeFileSync(`${__dirname}/bin/entries.bin`, "");            
+    }
+}
+
+
+export const Portal = class {
+
+    static eventListeners = {};
+
+    static on(event, callback) {
+        if (!Portal.eventListeners[event]) {
+            Portal.eventListeners[event] = [];
+        }
+        Portal.eventListeners[event].push(callback);
+    }
+
+    static emit(event, data) {
+        const listeners = Portal.eventListeners[event];
+        if (listeners) {
+            listeners.forEach((listener) => listener(data));
+        }
+    }
+}
+
