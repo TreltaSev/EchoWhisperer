@@ -73,7 +73,7 @@ export const fileVerify = () => {
       
 
     if (fs.existsSync(`${__dirname}/bin/settings.json`) === false) {
-        fs.writeFileSync(`${__dirname}/bin/settings.json`, JSON.stringify({"sortbyname?" : false,"sortbytime?" : false,"prioritizeapplication?" : false,"hideallnonapplications?" : false,"hideallapplications?" : false}  , null, "\t"));
+        fs.writeFileSync(`${__dirname}/bin/settings.json`, JSON.stringify({"sortbyname?" : false,"sortbytime?" : false,"prioritizefavorite?" : false,"hideallnonfavorites?" : false,"hideallfavorites?" : false, "prioritizeopen": false, "hideallopen?": false, "hideallnotopen?": false}  , null, "\t"));
     }
 
     jsVerify();
@@ -87,10 +87,10 @@ const jsVerify = () => {
     const _raw = fs.readFileSync(`${__dirname}/bin/settings.json`);
     try {
         if (Object.values(JSON.parse(_raw)).every(val => typeof val === 'boolean') == false) {
-            fs.writeFileSync(`${__dirname}/bin/settings.json`, JSON.stringify({"sortbyname?" : false,"sortbytime?" : false,"prioritizeapplication?" : false,"hideallnonapplications?" : false,"hideallapplications?" : false}  , null, "\t"));
+            fs.writeFileSync(`${__dirname}/bin/settings.json`, JSON.stringify({"sortbyname?" : false,"sortbytime?" : false,"prioritizefavorite?" : false,"hideallnonfavorites?" : false,"hideallfavorites?" : false, "prioritizeopen?": false, "hideallopen?" : false, "hideallnotopen?": false}  , null, "\t"));
         }
     } catch (e) {
-        fs.writeFileSync(`${__dirname}/bin/settings.json`, JSON.stringify({"sortbyname?" : false,"sortbytime?" : false,"prioritizeapplication?" : false,"hideallnonapplications?" : false,"hideallapplications?" : false}  , null, "\t"));
+        fs.writeFileSync(`${__dirname}/bin/settings.json`, JSON.stringify({"sortbyname?" : false,"sortbytime?" : false,"prioritizefavorite?" : false,"hideallnonfavorites?" : false,"hideallfavorites?" : false, "prioritizeopen?": false, "hideallopen?": false, "hideallnotopen?": false}  , null, "\t"));
     }
     return    
 }

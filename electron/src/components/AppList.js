@@ -5,11 +5,11 @@
  * @returns 
  */
 import React, { useContext, useEffect, useState, useRef } from "react";
+import { dark_red } from "@assets/colors";
+import { CloseIcon, Star } from "@assets/icons";
 import styling from "@assets/styling.module.css";
 import custom_styling from "@assets/custom.module.css"
-import { CloseIcon, Star } from "@assets/icons";
-import { dark_red } from "@assets/colors";
-import { undefinedCheck } from "@components/global";
+import { undefinedCheck, Portal } from "@components/global";
 
 const AppDetailText = (props) => {
     const _color = props.color !== undefined ? props.color : "#ECF1FF";
@@ -37,7 +37,6 @@ const FavoriteButton = (props) => {
     const _favorite = undefinedCheck(props.favorite, false);
 
     const toggle = () => {
-        console.log(props);
         props.socket.send(JSON.stringify({type: "set?", entry: props.name, value: !_favorite == true ? 1 : 0}));
     }
 
@@ -50,8 +49,6 @@ const FavoriteButton = (props) => {
 
 const DeleteButton = (props) => {
     const toggle = () => {
-        console.log(props);
-        // delete
         props.socket.send(JSON.stringify({type: "delete?", entry: props.name}));
     }
 
@@ -80,12 +77,10 @@ const AppDetailChip = (props) => {
     const RightSideSwatch = useRef(null);
 
     const mouseEnter = () => {
-        console.log(RightSideSwatch);
         RightSideSwatch.current.classList.add(custom_styling.AppList_right_side_close_active);
     }
 
     const mouseLeave = () => {
-        console.log(RightSideSwatch);
         RightSideSwatch.current.classList.remove(custom_styling.AppList_right_side_close_active);
     }
 
@@ -139,11 +134,84 @@ const AppDetailChip = (props) => {
 }
 
 const AppList = (props) => {
-    console.log(props)
+    const fs = require("fs");
+    const [settings, setSettings] = useState(JSON.parse(fs.readFileSync(`${__dirname}/bin/settings.json`, "utf-8")))
+    Portal.on("toggleSetting", (data) => {
+        setSettings(JSON.parse(fs.readFileSync(`${__dirname}/bin/settings.json`, "utf-8")));
+    });
+
+    const sortbyname = settings["sortbyname?"];
+    const sortbytime = settings["sortbytime?"]
+    const prioritizefavorite = settings["prioritizefavorite?"]
+    const prioritizeopen = settings["prioritizeopen?"]
+    const hideallnonfavorites = settings["hideallnonfavorites?"]
+    const hideallfavorites = settings["hideallfavorites?"]
+    const hideallopen = settings["hideallopen?"]
+    const hideallnotopen = settings["hideallnotopen?"]
+    
+    console.log("refresh")
+    let _entries = props.entries;
+
+    if (sortbyname) {
+        _entries.sort((a, b) => {
+            const nameA = a.name.toUpperCase();
+            const nameB = b.name.toUpperCase();
+            if (nameA < nameB) {return -1;}
+            if (nameA > nameB) {return 1;}
+            return 0;
+        })
+    }
+
+    if (sortbytime) {
+        _entries.sort((a, b) => {
+            return b.time - a.time;
+        })
+    }    
+
+    if (prioritizeopen) {
+        _entries.sort((a, b) => {
+            if (a.isOpen && !b.isOpen) {
+                return -1;
+            }
+            if (!a.isOpen && b.isOpen) {
+                return 1;
+            }
+            return 0;
+        })
+    }
+
+    if (prioritizefavorite) {
+        _entries.sort((a, b) => {
+            if (a.isFavorite && !b.isFavorite) {
+                return -1;
+            }
+            if (!a.isFavorite && b.isFavorite) {
+                return 1;
+            }
+            return 0;
+        })
+    }
+
+    if (hideallfavorites) {
+        _entries = _entries.filter(item => !item.isFavorite)
+    }
+
+    if (hideallnonfavorites) {
+        _entries = _entries.filter(item => item.isFavorite)
+    }
+
+    if (hideallopen) {
+        _entries = _entries.filter(item => !item.isOpen)
+    }
+
+    if (hideallnotopen) {
+        _entries = _entries.filter(item => item.isOpen)
+    }
+    
     return (
         <div style={{width: "100%", minWidth: 300, padding: "30px 10px", gap:10, overflowY: "auto", overflowX: "hidden"}} className={`${styling.flex_col} ${styling.align_items_center} ${styling.border_box} ${styling.flex_fill_height} ${styling.dark_sub} ${styling.border_right} ${styling.dark_accent} ${styling.scroll}`}>
             {
-                props.entries !== [] ? Object.entries(props.entries).map(([k, s], i) => (
+                _entries !== [] ? Object.entries(_entries).map(([k, s], i) => (
                     <AppDetailChip socket={props.socket} key={`${s.name}__`} processName={s.name} seconds={s.time} isOpen={s.isOpen} isFavorite={s.isFavorite} pid={s.pid}/>
                 )) : <></>
             }

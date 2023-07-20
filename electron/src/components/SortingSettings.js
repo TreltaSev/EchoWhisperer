@@ -87,22 +87,36 @@ const SortingSettings = () => {
                 <Text size={10} color="#2880D2" fontFamily="LatoItalic" opacity="1">Works With Prioritize Application, Turns off Sort By Name</Text>
             </Setting>
 
-            <Setting name="prioritizeapplication?">
-                <Text size={14}>Prioritize Application</Text>
-                <Text size={12} color="rgba(236, 241, 255, 0.5)">Lists out applications while prioritizing applications meaning all entries with isApplication? set to True show up first.</Text>
-                <Text size={10} color="#2880D2" fontFamily="LatoItalic" opacity="1">Can work with Sort By Name</Text>
+            <Setting name="prioritizefavorite?">
+                <Text size={14}>Prioritize Favorites</Text>
+                <Text size={12} color="rgba(236, 241, 255, 0.5)">Lists out applications while prioritizing favorites meaning all entries with isFavorite? set to True show up first.</Text>
+                <Text size={10} color="#2880D2" fontFamily="LatoItalic" opacity="1">Works with Sort by name and time and open</Text>
             </Setting>
 
-            <Setting name="hideallnonapplications?">
-                <Text size={14}>Hide all Non-Applications</Text>
-                <Text size={12} color="rgba(236, 241, 255, 0.5)">Pretty self-explanatory, hides all entries with isApplication? set to <Text size={10} opacity="1" color="#F43944">False</Text></Text>
-                <Text size={10} color="#2880D2" fontFamily="LatoItalic" opacity="1">Deactivates Hide all Applications</Text>
+            <Setting name="prioritizeopen?">
+                <Text size={14}>Prioritize Open</Text>
+                <Text size={12} color="rgba(236, 241, 255, 0.5)">Lists out applications while prioritizing opens meaning all entries with isOpen? set to True show up first.</Text>
+                <Text size={10} color="#2880D2" fontFamily="LatoItalic" opacity="1">Works with Sort by name and time and open</Text>
             </Setting>
 
-            <Setting name="hideallapplications?">
-                <Text size={14}>Hide all Applications</Text>
-                <Text size={12} color="rgba(236, 241, 255, 0.5)">Pretty self-explanatory, hides all entries with isApplication? set to <Text size={10} opacity="1" color="#52FF59">True</Text></Text>
-                <Text size={10} color="#2880D2" fontFamily="LatoItalic" opacity="1">Deactivates Hide all Non-Applications</Text>
+            <Setting name="hideallnonfavorites?">
+                <Text size={14}>Hide all Non-Favorites</Text>
+                <Text size={12} color="rgba(236, 241, 255, 0.5)">Pretty self-explanatory, hides all entries with isFavorite? set to <Text size={10} opacity="1" color="#F43944">False</Text></Text>
+            </Setting>
+
+            <Setting name="hideallfavorites?">
+                <Text size={14}>Hide all Favorites</Text>
+                <Text size={12} color="rgba(236, 241, 255, 0.5)">Pretty self-explanatory, hides all entries with isFavorite? set to <Text size={10} opacity="1" color="#52FF59">True</Text></Text>
+            </Setting>
+
+            <Setting name="hideallopen?">
+                <Text size={14}>Hide all Open</Text>
+                <Text size={12} color="rgba(236, 241, 255, 0.5)">Pretty self-explanatory, hides all entries with isOpen? set to <Text size={10} opacity="1" color="#52FF59">True</Text></Text>
+            </Setting>
+
+            <Setting name="hideallnotopen?">
+                <Text size={14}>Hide all Not-Open</Text>
+                <Text size={12} color="rgba(236, 241, 255, 0.5)">Pretty self-explanatory, hides all entries with isOpen? set to <Text size={10} opacity="1" color="#F43944">False</Text></Text>
             </Setting>
         </div>
     )

@@ -54,7 +54,6 @@ const App = () => {
       newSocket.onmessage = (event) => {
         try {
           const data = JSON.parse(event.data);
-          console.log(data)
 
           if (data["type"] == "get?") {
             setEntries(data["entries"]);            
