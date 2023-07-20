@@ -54,6 +54,11 @@ const SortingSettings = () => {
         console.log(data)
         const _dir = `${__dirname}/bin/settings.json`;
         
+        const _raw = fs.readFileSync(_dir, "utf-8");
+        const _parsed = JSON.parse(_raw);
+        _parsed[data.name] = data.value;
+
+        
 
     });
 

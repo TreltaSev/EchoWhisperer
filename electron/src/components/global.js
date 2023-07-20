@@ -62,22 +62,32 @@ export const Text = (props) => {
  * c++ portion of this program.
  */
 export const fileVerify = () => {
+    try {
+        fs.mkdirSync(`${__dirname}/bin`); 
+    } catch (_e) {
+        // pass
+    }
+      
+
     if (fs.existsSync(`${__dirname}/bin/settings.json`) === false) {
-        const _baseObj = {
-            "sortbyname?" : false,
-            "sortbytime?" : false,
-            "prioritizeapplication?" : false,
-            "hideallnonapplications?" : false,
-            "hideallapplications?" : false
-        }
-        fs.mkdirSync(`${__dirname}/bin`);      
-        fs.writeFileSync(`${__dirname}/bin/settings.json`, JSON.stringify(_baseObj, null, "\t"));
+        fs.writeFileSync(`${__dirname}/bin/settings.json`, JSON.stringify({"sortbyname?" : false,"sortbytime?" : false,"prioritizeapplication?" : false,"hideallnonapplications?" : false,"hideallapplications?" : false}  , null, "\t"));
     }
 
+    jsVerify();
+
     if (fs.existsSync(`${__dirname}/bin/entries.bin`) === false) {
-        fs.mkdirSync(`${__dirname}/bin`); 
         fs.writeFileSync(`${__dirname}/bin/entries.bin`, "");            
     }
+}
+
+export const jsVerify = () => {
+    const _raw = fs.readFileSync(`${__dirname}/bin/settings.json`);
+    try {
+        JSON.parse(_raw);
+    } catch (e) {
+        fs.writeFileSync(`${__dirname}/bin/settings.json`, JSON.stringify({"sortbyname?" : false,"sortbytime?" : false,"prioritizeapplication?" : false,"hideallnonapplications?" : false,"hideallapplications?" : false}  , null, "\t"));
+    }
+    return    
 }
 
 
