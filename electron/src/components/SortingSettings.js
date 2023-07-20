@@ -20,12 +20,20 @@ const ToggleButton = (props) => {
 
     const [_active, _setActive] = useState(false);
     
-    
-    
     useEffect(() => {
         const _parsed = JSON.parse(fs.readFileSync(`${__dirname}/bin/settings.json`, "utf-8"));
         _setActive(_parsed[props.name]);
     }, [])
+
+    Portal.on("toggleSetting", (data) => {
+        if (data.name === "sortbyname?" && data.value === true && props.name === "sortbytime?" && _active === true) {
+            toggle()
+        }
+
+        if (data.name === "sortbytime?" && data.value === true && props.name === "sortbyname?" && _active === true) {
+            toggle()
+        }
+    });
 
 
     const toggle = () => {
