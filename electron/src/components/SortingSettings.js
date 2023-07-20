@@ -49,17 +49,10 @@ const Setting = (props) => {
 const SortingSettings = () => {
 
     Portal.on("toggleSetting", (data) => {
-
         fileVerify()
-        console.log(data)
-        const _dir = `${__dirname}/bin/settings.json`;
-        
-        const _raw = fs.readFileSync(_dir, "utf-8");
-        const _parsed = JSON.parse(_raw);
+        const _parsed = JSON.parse(fs.readFileSync(`${__dirname}/bin/settings.json`, "utf-8"));
         _parsed[data.name] = data.value;
-
-        
-
+        fs.writeFileSync(`${__dirname}/bin/settings.json`, JSON.stringify(_parsed, null, "\t"));
     });
 
     return (

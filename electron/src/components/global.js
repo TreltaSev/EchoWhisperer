@@ -60,6 +60,9 @@ export const Text = (props) => {
  * Checks for `/bin`, `/bin/settings.json`, and `/bin/entries.bin`
  * settings.json is used by the electron portion while entries.bin is used mainly by the
  * c++ portion of this program.
+ * This method also checks for json inegrity using the `jsVerify()` method.
+ * the only way in all hell that this would break is if the user deletes the files instantly after the check is made
+ * or if windows just stops creation of the files.
  */
 export const fileVerify = () => {
     try {
@@ -80,7 +83,7 @@ export const fileVerify = () => {
     }
 }
 
-export const jsVerify = () => {
+const jsVerify = () => {
     const _raw = fs.readFileSync(`${__dirname}/bin/settings.json`);
     try {
         JSON.parse(_raw);
