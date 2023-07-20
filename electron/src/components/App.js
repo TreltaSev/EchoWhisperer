@@ -14,8 +14,9 @@ const App = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [entries, setEntries] = useState([]);
   
-  useEffect(() => {
-    fileVerify()    
+
+  useEffect(() => {     
+    fileVerify()   
     const createWebSocket = () => {
       
       const newSocket = new WebSocket('ws://127.0.0.1:2411');
