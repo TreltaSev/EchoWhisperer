@@ -86,7 +86,9 @@ export const fileVerify = () => {
 const jsVerify = () => {
     const _raw = fs.readFileSync(`${__dirname}/bin/settings.json`);
     try {
-        JSON.parse(_raw);
+        if (Object.values(JSON.parse(_raw)).every(val => typeof val === 'boolean') == false) {
+            fs.writeFileSync(`${__dirname}/bin/settings.json`, JSON.stringify({"sortbyname?" : false,"sortbytime?" : false,"prioritizeapplication?" : false,"hideallnonapplications?" : false,"hideallapplications?" : false}  , null, "\t"));
+        }
     } catch (e) {
         fs.writeFileSync(`${__dirname}/bin/settings.json`, JSON.stringify({"sortbyname?" : false,"sortbytime?" : false,"prioritizeapplication?" : false,"hideallnonapplications?" : false,"hideallapplications?" : false}  , null, "\t"));
     }

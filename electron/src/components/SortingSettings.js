@@ -4,29 +4,39 @@
  * 
  * @returns 
  */
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styling from "@assets/styling.module.css";
 import custom_styling from "@assets/custom.module.css"
 import { Text, Portal, fileVerify } from "@components/global";
 import { dark_white, dark_ult, dark_red, opacity } from "../assets/colors";
 const fs = require("fs");
 
+
+
 const ToggleButton = (props) => {
+    fileVerify()
     const _chipRef = useRef(null);
     const _parentRef = useRef(null);
+
     const [_active, _setActive] = useState(false);
-    const _initial = false;
+    
+    
+    
+    useEffect(() => {
+        const _parsed = JSON.parse(fs.readFileSync(`${__dirname}/bin/settings.json`, "utf-8"));
+        _setActive(_parsed[props.name]);
+    }, [])
+
 
     const toggle = () => {
-        Portal.emit("toggleSetting", {name: props.name, value: !_active})
-        _parentRef.current.animate({backgroundColor: _active ? dark_red : dark_ult}, {duration: 300, fill: "forwards", easing: "cubic-bezier(0.68, -0.6, 0.32, 1.6)"})
-        _chipRef.current.animate({transform: `translate(${_active ? 4 : 30}px, -50%)`}, {duration: 300, fill: "forwards", easing: "cubic-bezier(0.68, -0.6, 0.32, 1.6)"});
-        _setActive(!_active);
+        Portal.emit("toggleSetting", {name: props.name, value: !_active})        
+        _setActive(!_active)
     }
 
+
     return (
-        <div ref={_parentRef} onClick = {() => toggle()} style={{backgroundColor: _initial ? dark_ult : dark_red}} className={`${custom_styling.SortingSettings_switch_parent}`}>
-            <div ref={_chipRef} style={{border: `4px solid ${opacity(dark_white, "0.5")}`, backgroundColor: opacity(dark_white, "0.5"), transform: `translate(${_initial ? "30px" : "4px"}, -50%)`}} className={`${custom_styling.SortingSettings_switch_child}`}>
+        <div ref={_parentRef} onClick = {() => toggle()} style={{backgroundColor:  _active ? dark_ult : dark_red, transition: "0.3s", transitionTimingFunction: "cubic-bezier(0.68, -0.6, 0.32, 1.6)"}} className={`${custom_styling.SortingSettings_switch_parent}`}>
+            <div ref={_chipRef} style={{border: `4px solid ${opacity(dark_white, "0.5")}`, backgroundColor: opacity(dark_white, "0.5"), transform: `translate(${_active ? 30 : 4}px, -50%)`, transition: "0.3s", transitionTimingFunction: "cubic-bezier(0.68, -0.6, 0.32, 1.6)"}} className={`${custom_styling.SortingSettings_switch_child}`}>
 
             </div>
         </div>
