@@ -197,11 +197,18 @@ bool Entries::addifnotexists(Entry& entry){
     
     std::ofstream file(this->fileName, std::ios::binary | std::ios::app);
     
+    if (file.fail()) {
+        std::cerr << "Failed for some reason...?: " << strerror(errno) << std::endl;
+    } else {
+        std::cout << "Didnt fail...?" << std::endl;
+    }
+
     if (!file)
     {
         std::cerr << "Failed to open file " << fileName << "\n";
         return false;
     }
+    
     int nameSize = entry.name.size();
     file.write(reinterpret_cast<const char*>(&nameSize), sizeof(nameSize));
     file.write(entry.name.c_str(), nameSize);

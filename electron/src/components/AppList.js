@@ -10,6 +10,7 @@ import { CloseIcon, Star } from "@assets/icons";
 import styling from "@assets/styling.module.css";
 import custom_styling from "@assets/custom.module.css"
 import { undefinedCheck, Portal, fileVerify } from "@components/global";
+import { _pathSettings } from "@components/global";
 
 const AppDetailText = (props) => {
     const _color = props.color !== undefined ? props.color : "#ECF1FF";
@@ -136,9 +137,9 @@ const AppDetailChip = (props) => {
 const AppList = (props) => {
     const fs = require("fs");
     fileVerify() 
-    const [settings, setSettings] = useState(JSON.parse(fs.readFileSync(`${__dirname}/bin/settings.json`, "utf-8")))
+    const [settings, setSettings] = useState(JSON.parse(fs.readFileSync(_pathSettings, "utf-8")))
     Portal.on("toggleSetting", (data) => {
-        setSettings(JSON.parse(fs.readFileSync(`${__dirname}/bin/settings.json`, "utf-8")));
+        setSettings(JSON.parse(fs.readFileSync(_pathSettings, "utf-8")));
     });
 
     const sortbyname = settings["sortbyname?"];

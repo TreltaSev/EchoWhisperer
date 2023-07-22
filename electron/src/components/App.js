@@ -7,8 +7,6 @@ import AppInfo from "./AppInfo";
 import custom_styling from "@assets/custom.module.css"
 import { fileVerify } from "@components/global";
 
-
-
 const App = () => {
   const [socket, setSocket] = useState(null);  
   const [isConnected, setIsConnected] = useState(false);

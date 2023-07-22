@@ -7,6 +7,39 @@
 import React from "react";
 import styling from "@assets/styling.module.css"
 const fs = require("fs")
+const { ipcRenderer } = require('electron');
+
+
+/**
+ * Checks if the program is packaged with nsis.
+ */
+export const isPackaged = ipcRenderer.sendSync("get:isPackaged");
+
+/**
+ * A path remedy which handles different paths depending
+ * on if the program was compiled and packaged or still
+ * in development.
+ */
+export const pathRemedy = isPackaged ? "/../.." : ""
+
+/**
+ * path to bin/
+ */
+export const _pathBin = `${__dirname}${pathRemedy}/bin`
+
+/**
+ * Path to settings.json
+ */
+export const _pathSettings = `${_pathBin}/settings.json`;
+
+/**
+ * path to entries.bin
+ */
+export const _pathEntries  = `${_pathBin}/entries.bin`;
+
+
+
+
 /**
 * Takes in a _val which is the variable to check
 * and a _default which is the default value after the undefined check.
@@ -54,6 +87,10 @@ export const Text = (props) => {
     )
 }
 
+const _writeSettings = () => {
+    fs.writeFileSync(_pathSettings, JSON.stringify({"sortbyname?" : false,"sortbytime?" : false,"prioritizefavorite?" : false,"hideallnonfavorites?" : false,"hideallfavorites?" : false, "prioritizeopen": false, "hideallopen?": false, "hideallnotopen?": false}  , null, "\t"));
+}
+
 /**
  * A basic method which checks files and directories and creates
  * these files and directories if it doesnt exist.
@@ -65,33 +102,18 @@ export const Text = (props) => {
  * or if windows just stops creation of the files.
  */
 export const fileVerify = () => {
-    try {
-        fs.mkdirSync(`${__dirname}/bin`); 
-    } catch (_e) {
-        // pass
-    }
-      
-
-    if (fs.existsSync(`${__dirname}/bin/settings.json`) === false) {
-        fs.writeFileSync(`${__dirname}/bin/settings.json`, JSON.stringify({"sortbyname?" : false,"sortbytime?" : false,"prioritizefavorite?" : false,"hideallnonfavorites?" : false,"hideallfavorites?" : false, "prioritizeopen": false, "hideallopen?": false, "hideallnotopen?": false}  , null, "\t"));
+    if (fs.existsSync(_pathBin) == false) {
+        fs.mkdirSync(_pathBin);
     }
 
+    if (fs.existsSync(_pathSettings) === false) {_writeSettings();}
     jsVerify();
-
-    if (fs.existsSync(`${__dirname}/bin/entries.bin`) === false) {
-        fs.writeFileSync(`${__dirname}/bin/entries.bin`, "");            
-    }
+    if (fs.existsSync(_pathEntries) === false) {fs.writeFileSync(_pathEntries, "");}
 }
 
 const jsVerify = () => {
-    const _raw = fs.readFileSync(`${__dirname}/bin/settings.json`);
-    try {
-        if (Object.values(JSON.parse(_raw)).every(val => typeof val === 'boolean') == false) {
-            fs.writeFileSync(`${__dirname}/bin/settings.json`, JSON.stringify({"sortbyname?" : false,"sortbytime?" : false,"prioritizefavorite?" : false,"hideallnonfavorites?" : false,"hideallfavorites?" : false, "prioritizeopen?": false, "hideallopen?" : false, "hideallnotopen?": false}  , null, "\t"));
-        }
-    } catch (e) {
-        fs.writeFileSync(`${__dirname}/bin/settings.json`, JSON.stringify({"sortbyname?" : false,"sortbytime?" : false,"prioritizefavorite?" : false,"hideallnonfavorites?" : false,"hideallfavorites?" : false, "prioritizeopen?": false, "hideallopen?": false, "hideallnotopen?": false}  , null, "\t"));
-    }
+    const _raw = fs.readFileSync(_pathSettings);
+    try {if (Object.values(JSON.parse(_raw)).every(val => typeof val === 'boolean') == false) {_writeSettings();}} catch (e) {_writeSettings();}
     return    
 }
 
@@ -114,4 +136,6 @@ export const Portal = class {
         }
     }
 }
+
+
 

@@ -1,5 +1,7 @@
 const {BrowserWindow, app, Menu, ipcMain} = require("electron");
 const path = require('path');
+const os = require('os');
+const fs = require("fs");
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = true;
 
 const listeners = (window) => {
@@ -10,6 +12,10 @@ const listeners = (window) => {
     ipcMain.on("window:minimize", () => {
         window.minimize();
     });
+
+    ipcMain.on("get:isPackaged", (event) => {
+        event.returnValue = app.isPackaged;
+    })
 }
 
 const createWindow = () => {

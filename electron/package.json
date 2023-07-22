@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "electron .",
-    "prod:dist": "electron-builder",
+    "prod:dist": "npx webpack && electron-builder",
     "dev:refresh": "npx webpack && npm run start"
   },
   "repository": {
@@ -45,8 +45,8 @@
       "publisherName": "Trelta"
     },
     "nsis": {
-      "oneClick": false,
-      "perMachine": true
+      "oneClick": true,
+      "perMachine": false
     }
   },
   "dependencies": {

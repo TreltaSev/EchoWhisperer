@@ -7,7 +7,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styling from "@assets/styling.module.css";
 import custom_styling from "@assets/custom.module.css"
-import { Text, Portal, fileVerify } from "@components/global";
+import { Text, Portal, fileVerify, _pathSettings } from "@components/global";
 import { dark_white, dark_ult, dark_red, opacity } from "../assets/colors";
 const fs = require("fs");
 
@@ -21,7 +21,7 @@ const ToggleButton = (props) => {
     const [_active, _setActive] = useState(false);
     
     useEffect(() => {
-        const _parsed = JSON.parse(fs.readFileSync(`${__dirname}/bin/settings.json`, "utf-8"));
+        const _parsed = JSON.parse(fs.readFileSync(_pathSettings, "utf-8"));
         _setActive(_parsed[props.name]);
     }, [])
 
@@ -68,9 +68,9 @@ const SortingSettings = () => {
 
     Portal.on("toggleSetting", (data) => {
         fileVerify()
-        const _parsed = JSON.parse(fs.readFileSync(`${__dirname}/bin/settings.json`, "utf-8"));
+        const _parsed = JSON.parse(fs.readFileSync(_pathSettings, "utf-8"));
         _parsed[data.name] = data.value;
-        fs.writeFileSync(`${__dirname}/bin/settings.json`, JSON.stringify(_parsed, null, "\t"));
+        fs.writeFileSync(_pathSettings, JSON.stringify(_parsed, null, "\t"));
     });
 
     return (

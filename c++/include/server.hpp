@@ -92,7 +92,6 @@ void serverLoop() {
         // Wait for connection
         tcp::socket socket{ioc};
         acceptor.accept(socket);
-        std::cout << "Socket Accepted" << std::endl;
         // Create Thread
         std::thread{
             [q = std::move(socket)]() mutable {
@@ -108,7 +107,6 @@ void serverLoop() {
                         boost::beast::flat_buffer buffer;
                         WebSocketStream.read(buffer);
                         auto out = boost::beast::buffers_to_string(buffer.cdata());                        
-                        std::cout<<out<<std::endl;
 
                         std::string response;
 
@@ -128,8 +126,7 @@ void serverLoop() {
                     catch(boost::beast::system_error const& se)
                     {
                         if (se.code() != boost::beast::websocket::error::closed)
-                        {
-                            std::cout << se.code().message() << std::endl;
+                        {                            
                             break;
                         }
                     }

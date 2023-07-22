@@ -1,1 +1,0 @@
-g++ -o test.exe -I"./include" ./src/test.cpp -lws2_32
