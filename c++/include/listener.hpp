@@ -21,6 +21,7 @@
 void listenerLoop() {
     while (true)
     {
+        directory_check();
         auto start = std::chrono::high_resolution_clock::now(); 
         Entries entries("bin/entries.bin");  
         std::vector<ProcessInfo> processes;

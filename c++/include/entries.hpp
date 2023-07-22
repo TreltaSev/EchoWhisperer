@@ -196,7 +196,7 @@ bool Entries::addifnotexists(Entry& entry){
     }
     
     std::ofstream file(this->fileName, std::ios::binary | std::ios::app);
-
+    
     if (!file)
     {
         std::cerr << "Failed to open file " << fileName << "\n";
