@@ -57,8 +57,6 @@ const _bwatch = class {
 const AppInfo = (props) => {
     const [__, ___] = useState(null);
     const _loggerActive = new _bwatch(props.isConnected);
-    const _loggerInstalled = new _bwatch(true);
-    const _allGud = new _bwatch(true); 
     const [_runningTicker, _setRunningTicker] = useState(0);
 
     useEffect(() => {
@@ -75,16 +73,6 @@ const AppInfo = (props) => {
             <BTextGroup>
                 <Text small={true} color="rgba(236, 241, 255, 0.5)">loggerActive?</Text>
                 <Text small={true} color={_loggerActive.color}>{_loggerActive.text}</Text>
-            </BTextGroup>
-
-            <BTextGroup>
-                <Text small={true} color="rgba(236, 241, 255, 0.5)">loggerInstalled?</Text>
-                <Text small={true} color={_loggerInstalled.color}>{_loggerInstalled.text}</Text>
-            </BTextGroup>
-
-            <BTextGroup>
-                <Text small={true} color="rgba(236, 241, 255, 0.5)">allGud?</Text>
-                <Text small={true} color={_allGud.color}>{_allGud.text}</Text>
             </BTextGroup>
 
             <div className={styling.flex_fill_width}/>
