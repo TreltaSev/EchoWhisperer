@@ -11,7 +11,7 @@
 #include <vector>
 #include <string>
 #include <psapi.h>
-
+#include <filesystem>
 
 const char* cvlGreen = "\u100b[38;2;132;210;71m";
 const char* cvlRed = "\u100b[38;2;244;108;99m";
@@ -102,6 +102,13 @@ std::vector<PROCESSENTRY32> get_running_processes()
     return processes;
 }
 
-
+/* Simple Check to see if a bin directory exists */
+void directory_check() {
+    if (!std::filesystem::exists("bin/")) {
+        // File Doesn't exist, Create it.
+        std::filesystem::create_directory("bin/");
+        return;
+    }
+}
 
 #endif
