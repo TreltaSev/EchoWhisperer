@@ -21,7 +21,9 @@ const listeners = (window) => {
 const createWindow = () => {
     const win = new BrowserWindow({
         width: 800,
+        minWidth: 400,
         height: 600,
+        minHeight: 300,
         frame: false,
         title: "Echo Whisperer",
         icon: path.join(__dirname, './icon.ico'),

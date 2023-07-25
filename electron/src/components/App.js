@@ -12,6 +12,7 @@ const App = () => {
   const [socket, setSocket] = useState(null);  
   const [isConnected, setIsConnected] = useState(false);
   const [entries, setEntries] = useState([]);
+  const [_hideSettings, _setHideSettings] = useState(false);
   
   Portal.on("refresh", () => {
     if (!isConnected) {
@@ -20,6 +21,14 @@ const App = () => {
   })
 
   useEffect(() => {     
+    window.addEventListener("resize", () => {
+      console.log(`w: ${window.innerWidth}, h: ${window.innerHeight}`)
+      if (window.innerWidth < 750) {
+        _setHideSettings(true)
+      } else {
+        _setHideSettings(false)
+      }
+    })
     fileVerify()   
     let effectConnected = isConnected;
     const createWebSocket = () => {      
@@ -110,7 +119,9 @@ const App = () => {
         <NavigationBar/>
         <div className={`${styling.flex_row} ${styling.align_items_start} ${styling.justify_content_start} ${styling.align_self_stretch} ${custom_styling.App_fill_cstm}`}>
           <AppList entries={entries} socket={socket} isConnected={isConnected}/>
-          <SortingSettings/>
+          {
+            _hideSettings === false ? <SortingSettings/> : <></>
+          }
         </div>
         <AppInfo isConnected={isConnected}/>
       </div>
