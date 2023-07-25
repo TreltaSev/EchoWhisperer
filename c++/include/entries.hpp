@@ -12,8 +12,7 @@
 #include <codecvt>
 #include "helpers.hpp"
 
-struct Entry
-{
+struct Entry {
     std::string name;
     int time;
     int isFavorite;
@@ -31,13 +30,11 @@ class TypeOneResponse {
         std::string errmsg;
 };
 
-class Entries{
+class Entries {
     public:
         std::string fileName;
         Entries(std::string _fileName)
-        {
-            this->fileName = _fileName;
-        }
+        {this->fileName = _fileName;}
         void updateBulk(int amount);
         void saveBulk(std::vector<Entry>& entries);
         bool exists(std::string);
@@ -48,62 +45,45 @@ class Entries{
         void setIsFavorite(std::string entryName, int isFavorite);
         bool deleteEntry(std::string entryName);
         std::vector<Entry> readEntries();
-        
-
 };
-
 
 std::vector<Entry> Entries::readEntries() {
     std::ifstream file(this->fileName, std::ios::binary);
     std::vector<Entry> entries;
-    if (file)
-    {        
-        while (true)
-        {
+    if (file) {        
+        while (true) {
             int nameSize;
             int time;
             int isFavorite;
             int pid;
-
-            if (!file.read(reinterpret_cast<char*>(&nameSize), sizeof(nameSize))) {
-                break;
-            };
-
+            if (!file.read(reinterpret_cast<char*>(&nameSize), sizeof(nameSize))) {break;};
             std::string name(nameSize, '\0');
             file.read(&name[0], nameSize);
             file.read(reinterpret_cast<char*>(&time), sizeof(time));
             file.read(reinterpret_cast<char*>(&isFavorite), sizeof(isFavorite));
             file.read(reinterpret_cast<char*>(&pid), sizeof(pid));
-
             Entry entry{std::move(name), time, isFavorite, pid};
             entries.push_back(entry);
         }
         file.close();
     }
-    return entries;
-    
+    return entries;    
 }
 
-void Entries::updateBulk(int amount)
-{
+void Entries::updateBulk(int amount) {
     std::ifstream file(this->fileName, std::ios::binary);
-
-    if (file)
-    {
+    if (file) {
         std::vector<Entry> entries;
-        while (true)
-        {
+        while (true) {
             int nameSize;
-            if (!file.read(reinterpret_cast<char*>(&nameSize), sizeof(nameSize))) {
-                break;
-            };
-            std::string name(nameSize, '\0');
-            file.read(&name[0], nameSize);
             int time;
-            file.read(reinterpret_cast<char*>(&time), sizeof(time));
             int isFavorite;
-            file.read(reinterpret_cast<char*>(&isFavorite), sizeof(isFavorite));
             int pid;
+            if (!file.read(reinterpret_cast<char*>(&nameSize), sizeof(nameSize))) {break;};
+            std::string name(nameSize, '\0');
+            file.read(&name[0], nameSize);            
+            file.read(reinterpret_cast<char*>(&time), sizeof(time));            
+            file.read(reinterpret_cast<char*>(&isFavorite), sizeof(isFavorite));            
             file.read(reinterpret_cast<char*>(&pid), sizeof(pid));
             time += amount;
             Entry entry{std::move(name), time, isFavorite, pid};
@@ -114,10 +94,8 @@ void Entries::updateBulk(int amount)
     }
 }
 
-void Entries::saveBulk(std::vector<Entry>& entries)
-{
+void Entries::saveBulk(std::vector<Entry>& entries) {
     std::ofstream file(this->fileName, std::ios::binary);
-
     if (file) {
         for (const Entry& entry: entries) {
             int nameSize = entry.name.size();
@@ -131,13 +109,10 @@ void Entries::saveBulk(std::vector<Entry>& entries)
     }
 }
 
-bool Entries::exists(std::string entryName)
-{
+bool Entries::exists(std::string entryName) {
     std::ifstream file(this->fileName, std::ios::binary);
-    if (file)
-    {
-        while(true)
-        {
+    if (file) {
+        while(true) {
             int nameSize;
             int time;
             int isFavorite;
@@ -148,7 +123,6 @@ bool Entries::exists(std::string entryName)
             if (!file.read(reinterpret_cast<char*>(&time), sizeof(time))) break;
             if (!file.read(reinterpret_cast<char*>(&isFavorite), sizeof(isFavorite))) break;
             if (!file.read(reinterpret_cast<char*>(&pid), sizeof(pid))) break;
-
             if (name == entryName) {
                 file.close();
                 return true;
@@ -159,9 +133,8 @@ bool Entries::exists(std::string entryName)
     return false;
 }
 
-void Entries::clockUpdate(const std::string entryName, int NewPid){
+void Entries::clockUpdate(const std::string entryName, int NewPid) {
     std::fstream file(this->fileName, std::ios::binary | std::ios::in | std::ios::out);
-
     if (file) {
         while (true) {
             int nameSize;
@@ -186,29 +159,13 @@ void Entries::clockUpdate(const std::string entryName, int NewPid){
             }
         }
     }
-
     file.close();
 }
 
-bool Entries::addifnotexists(Entry& entry){
-    if (this->exists(entry.name)) {
-        return false;
-    }
-    
+bool Entries::addifnotexists(Entry& entry) {
+    if (this->exists(entry.name)) {return false;}    
     std::ofstream file(this->fileName, std::ios::binary | std::ios::app);
-    
-    if (file.fail()) {
-        std::cerr << "Failed for some reason...?: " << strerror(errno) << std::endl;
-    } else {
-        std::cout << "Didnt fail...?" << std::endl;
-    }
-
-    if (!file)
-    {
-        std::cerr << "Failed to open file " << fileName << "\n";
-        return false;
-    }
-    
+    if (!file){return false;}
     int nameSize = entry.name.size();
     file.write(reinterpret_cast<const char*>(&nameSize), sizeof(nameSize));
     file.write(entry.name.c_str(), nameSize);
@@ -216,59 +173,44 @@ bool Entries::addifnotexists(Entry& entry){
     file.write(reinterpret_cast<const char*>(&entry.isFavorite), sizeof(entry.isFavorite));
     file.write(reinterpret_cast<const char*>(&entry.pid), sizeof(entry.pid));
     file.close();
-    printf("[Entry] Added \"%s\"\n", entry.name.c_str());
     return true;
 }
 
-TypeOneResponse Entries::find(std::string entryName){
+TypeOneResponse Entries::find(std::string entryName) {
     std::ifstream file(this->fileName, std::ios::binary);
     TypeOneResponse typeResponse;
-    if (file)
-    {
+    if (file) {
         Entry foundEntry;
-        while (true)
-        {
+        while (true) {
             int nameSize;
-            if (!file.read(reinterpret_cast<char*>(&nameSize), sizeof(nameSize))) {
-                typeResponse.failed = true;
-                typeResponse.errmsg = "EndOfFile, Not Found...";
-                break;
-            };
-            std::string name(nameSize, '\0');
-            file.read(&name[0], nameSize);
             int time;
-            file.read(reinterpret_cast<char*>(&time), sizeof(time));
             int isFavorite;
-            file.read(reinterpret_cast<char*>(&isFavorite), sizeof(isFavorite));
-            int pid;
-            file.read(reinterpret_cast<char*>(&pid), sizeof(pid));
-            
+            int pid;            
+            if (!file.read(reinterpret_cast<char*>(&nameSize), sizeof(nameSize))) {typeResponse.failed = true;typeResponse.errmsg = "EndOfFile, Not Found...";break;};
+            std::string name(nameSize, '\0');
+            file.read(&name[0], nameSize);            
+            file.read(reinterpret_cast<char*>(&time), sizeof(time));            
+            file.read(reinterpret_cast<char*>(&isFavorite), sizeof(isFavorite));            
+            file.read(reinterpret_cast<char*>(&pid), sizeof(pid));            
             typeResponse.time = time;
             typeResponse.name = name;
             typeResponse.pid = pid;
             typeResponse.isFavorite = isFavorite;
-            if (name == entryName)
-            {
-                break;
-            }            
+            if (name == entryName){break;}            
         }
         file.close();
         return typeResponse;
     }
     return typeResponse;
-
 }
 
 TypeOneResponse Entries::read(std::ifstream& file) {
     TypeOneResponse typeResponse;
     int nameSize;
-    if (!file.read(reinterpret_cast<char*>(&nameSize), sizeof(nameSize))){
-        typeResponse.failed = true;
-        return typeResponse;
-    }
-    std::string name(nameSize, '\0');
-    file.read(&name[0], nameSize);
+    if (!file.read(reinterpret_cast<char*>(&nameSize), sizeof(nameSize))){typeResponse.failed = true;return typeResponse;}
+    std::string name(nameSize, '\0');    
     typeResponse.name = name;
+    file.read(&name[0], nameSize);
     file.read(reinterpret_cast<char*>(&typeResponse.time), sizeof(typeResponse.time));
     file.read(reinterpret_cast<char*>(&typeResponse.isFavorite), sizeof(typeResponse.isFavorite));
     file.read(reinterpret_cast<char*>(&typeResponse.pid), sizeof(typeResponse.pid));
@@ -286,12 +228,10 @@ void Entries::setIsFavorite(std::string entryName, int _isFavorite) {
             if (!file.read(reinterpret_cast<char*>(&nameSize), sizeof(nameSize))) break;
             std::string name(nameSize, '\0');
             file.read(&name[0], nameSize);
-
             if (!file.read(reinterpret_cast<char*>(&time), sizeof(time))) break;
             std::streampos isFavoritePos = file.tellg();
             if (!file.read(reinterpret_cast<char*>(&isFavorite), sizeof(isFavorite))) break;
-            if (!file.read(reinterpret_cast<char*>(&pid), sizeof(pid))) break;
-            
+            if (!file.read(reinterpret_cast<char*>(&pid), sizeof(pid))) break;            
             if (name == entryName) {
                 file.seekp(isFavoritePos);
                 file.write(reinterpret_cast<const char*>(&_isFavorite), sizeof(_isFavorite));
@@ -305,28 +245,21 @@ void Entries::setIsFavorite(std::string entryName, int _isFavorite) {
 
 bool Entries::deleteEntry(std::string entryName) {
     std::ifstream file(this->fileName, std::ios::binary);
-
-    if (file)
-    {
+    if (file) {
         std::vector<Entry> entries;
-        while (true)
-        {
+        while (true) {
             int nameSize;
             int time;
             int isFavorite;
             int pid;
-            if (!file.read(reinterpret_cast<char*>(&nameSize), sizeof(nameSize))) {
-                break;
-            };
+            if (!file.read(reinterpret_cast<char*>(&nameSize), sizeof(nameSize))) {break;};
             std::string name(nameSize, '\0');
             file.read(&name[0], nameSize);            
             file.read(reinterpret_cast<char*>(&time), sizeof(time));            
             file.read(reinterpret_cast<char*>(&isFavorite), sizeof(isFavorite));            
             file.read(reinterpret_cast<char*>(&pid), sizeof(pid));
             Entry entry{std::move(name), time, isFavorite, pid};
-            if (entry.name != entryName) {
-                entries.push_back(entry);
-            }            
+            if (entry.name != entryName) {entries.push_back(entry);}            
         }
         file.close();
         this->saveBulk(entries);
