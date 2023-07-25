@@ -16,8 +16,13 @@ const App = () => {
 
   useEffect(() => {     
     fileVerify()   
-    const createWebSocket = () => {
-      
+    let effectConnected = isConnected;
+    const createWebSocket = () => {      
+      const update = (val) => {
+        setIsConnected(val);
+        effectConnected = val;
+      }
+
       const newSocket = new WebSocket('ws://127.0.0.1:2411');
 
       let interval = 0;
@@ -26,7 +31,7 @@ const App = () => {
         console.log('WebSocket connected');
         newSocket.send(JSON.stringify({type: "get?"}));
         setSocket(newSocket);
-        setIsConnected(true);
+        update(true);
 
         interval = setInterval(() => {
           if (newSocket !== null) {
@@ -39,7 +44,7 @@ const App = () => {
       newSocket.onclose = () => {
         console.log('WebSocket connection closed');
         setSocket(null);
-        setIsConnected(false);
+        update(false);
         console.log('Attempting to reconnect...');
         setTimeout(createWebSocket, 3000);
         clearInterval(interval);
@@ -47,7 +52,7 @@ const App = () => {
 
       newSocket.onerror = () => {
         console.error('WebSocket connection error');
-        setIsConnected(false);
+        update(false);
         clearInterval(interval);
       };
 
@@ -55,14 +60,9 @@ const App = () => {
         try {
           const data = JSON.parse(event.data);
 
-          if (data["type"] == "get?") {
-            setEntries(data["entries"]);            
-          } else if (data["type"] == "set?") {
-            newSocket.send(JSON.stringify({type: "get?"}));
-          } else if (data["type"] == "delete?") {
-            newSocket.send(JSON.stringify({type: "get?"}));
-          }
-
+          if (data["type"] == "get?") {setEntries(data["entries"]);}
+          else if (data["type"] == "set?") {newSocket.send(JSON.stringify({type: "get?"}));} 
+          else if (data["type"] == "delete?") {newSocket.send(JSON.stringify({type: "get?"}));}
         } catch (e) {
           console.log(event.data)
           console.warn(e)
@@ -74,12 +74,10 @@ const App = () => {
     
     let offlineReaderInterval = setInterval(() => {
       // Check if isConnected is set to true
-      if (isConnected === true) {
+      console.log(`isConnected: ${effectConnected}`)
+      if (effectConnected === true) {
         return;
       }
-
-      // Since isconnected is false, broadcast it.
-      Portal.emit("notConnected!", {});
 
       // Make sure entries.bin is discoverable
       fileVerify();
@@ -89,7 +87,6 @@ const App = () => {
 
       // Replace entries with parsed data from bin file
       setEntries(_entries);
-
     }, 1000);
 
     return () => {
@@ -107,7 +104,7 @@ const App = () => {
         { /* Navigation Menu holds all the buttons */ }
         <NavigationBar/>
         <div className={`${styling.flex_row} ${styling.align_items_start} ${styling.justify_content_start} ${styling.align_self_stretch} ${custom_styling.App_fill_cstm}`}>
-          <AppList entries={entries} socket={socket}/>
+          <AppList entries={entries} socket={socket} isConnected={isConnected}/>
           <SortingSettings/>
         </div>
         <AppInfo isConnected={isConnected}/>

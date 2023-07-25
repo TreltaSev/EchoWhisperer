@@ -151,7 +151,6 @@ const AppList = (props) => {
     const hideallopen = settings["hideallopen?"]
     const hideallnotopen = settings["hideallnotopen?"]
     
-    console.log("refresh")
     let _entries = props.entries;
 
     if (sortbyname) {
