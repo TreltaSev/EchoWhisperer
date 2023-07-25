@@ -36,7 +36,6 @@ void listenerLoop() {
         auto end = std::chrono::high_resolution_clock::now(); 
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
         double durationInSeconds = duration.count() / 1000.0;
-        printf("[ Log ] Finished in %fs\n", durationInSeconds);
         std::this_thread::sleep_for(std::chrono::seconds(5));   
     }
     return;
