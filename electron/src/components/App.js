@@ -13,6 +13,11 @@ const App = () => {
   const [isConnected, setIsConnected] = useState(false);
   const [entries, setEntries] = useState([]);
   
+  Portal.on("refresh", () => {
+    if (!isConnected) {
+      setEntries(getEntries(_pathEntries));
+    }
+  })
 
   useEffect(() => {     
     fileVerify()   

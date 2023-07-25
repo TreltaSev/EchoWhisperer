@@ -9,8 +9,7 @@ import { dark_red } from "@assets/colors";
 import { CloseIcon, Star } from "@assets/icons";
 import styling from "@assets/styling.module.css";
 import custom_styling from "@assets/custom.module.css"
-import { undefinedCheck, Portal, fileVerify } from "@components/global";
-import { _pathSettings } from "@components/global";
+import { undefinedCheck, Portal, fileVerify, _pathSettings, deleteEntry, _pathEntries } from "@components/global";
 
 const AppDetailText = (props) => {
     const _color = props.color !== undefined ? props.color : "#ECF1FF";
@@ -50,7 +49,13 @@ const FavoriteButton = (props) => {
 
 const DeleteButton = (props) => {
     const toggle = () => {
-        props.socket.send(JSON.stringify({type: "delete?", entry: props.name}));
+        if (props.isConnected === false) {
+            deleteEntry(_pathEntries, props.name);
+            Portal.emit("refresh", {})
+        } else {
+            props.socket.send(JSON.stringify({type: "delete?", entry: props.name}));
+        }
+        
     }
 
     return (
@@ -102,7 +107,7 @@ const AppDetailChip = (props) => {
             { /* Left Side Chip */}
             <div style={{zIndex: 3}} className={`${custom_styling.AppList_left_side_chip}`}/>
             <div ref={RightSideSwatch} style={{zIndex: 1}} className={`${custom_styling.AppList_right_side_close} ${styling.dark_sub} ${styling.flex_col} ${styling.align_items_center} ${styling.justify_content_center}`}>
-                <DeleteButton name={processName} socket={props.socket}/>
+                <DeleteButton isConnected={props.isConnected} name={processName} socket={props.socket}/>
             </div>
 
             { /* Content */}
@@ -213,7 +218,7 @@ const AppList = (props) => {
         <div style={{width: "100%", minWidth: 300, padding: "30px 10px", gap:10, overflowY: "auto", overflowX: "hidden"}} className={`${styling.flex_col} ${styling.align_items_center} ${styling.border_box} ${styling.flex_fill_height} ${styling.dark_sub} ${styling.border_right} ${styling.dark_accent} ${styling.scroll}`}>
             {
                 _entries !== [] ? Object.entries(_entries).map(([k, s], i) => (
-                    <AppDetailChip socket={props.socket} key={`${s.name}__`} processName={s.name} seconds={s.time} isOpen={s.isOpen} isFavorite={s.isFavorite} pid={s.pid}/>
+                    <AppDetailChip socket={props.socket} key={`${s.name}__`} processName={s.name} seconds={s.time} isOpen={s.isOpen} isFavorite={s.isFavorite} pid={s.pid} isConnected={props.isConnected}/>
                 )) : <></>
             }
         </div>
