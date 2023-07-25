@@ -17,9 +17,7 @@
 #include "entries.hpp"
 #include "helpers.hpp"
 
-
 using tcp = boost::asio::ip::tcp;
-
 bool incheck(std::vector<ProcessInfo> processes, int pid) {
     for (const auto& process: processes) {
         if (static_cast<int>(process.id) == pid) {
@@ -30,10 +28,8 @@ bool incheck(std::vector<ProcessInfo> processes, int pid) {
 }
 
 std::string getEntries() {
-
     std::vector<ProcessInfo> processes;
     EnumWindows(reinterpret_cast<WNDENUMPROC>(EnumProcessProc), reinterpret_cast<LPARAM>(&processes));
-
     nlohmann::json data;
     nlohmann::json ContainerEntries = nlohmann::json::array();
     Entries hEntries("bin/entries.bin");
@@ -47,7 +43,6 @@ std::string getEntries() {
         j_entry["isOpen"] = incheck(processes, entry.pid);
         ContainerEntries.push_back(j_entry);
     }
-
     data["entries"] = ContainerEntries;
     data["type"] = "get?";
     std::string jsonString = data.dump();
@@ -73,31 +68,18 @@ std::string deleteSpecificEntry(std::string entryName) {
     return response.dump();
 }
 
-
 void serverLoop() {
-    // Port and Address
     auto const address = boost::asio::ip::make_address("127.0.0.1");
     auto const port = static_cast<unsigned short>(std::atoi("2411"));
-
-    // Setup thread
     boost::asio::io_context ioc{1};
-
-    // Create acceptor
     tcp::acceptor acceptor{ioc, {address, port}};
-
-    
-    // Looper
     while(true)
     {
-        // Wait for connection
         tcp::socket socket{ioc};
         acceptor.accept(socket);
-        // Create Thread
         std::thread{
             [q = std::move(socket)]() mutable {
-                // Create Stream
                 boost::beast::websocket::stream<tcp::socket> WebSocketStream {std::move(q)};
-                // Accept Websocket Stream
                 WebSocketStream.accept();
                 while(true)
                 {
@@ -106,21 +88,13 @@ void serverLoop() {
                         // Read Message
                         boost::beast::flat_buffer buffer;
                         WebSocketStream.read(buffer);
-                        auto out = boost::beast::buffers_to_string(buffer.cdata());                        
-
+                        auto out = boost::beast::buffers_to_string(buffer.cdata());
                         std::string response;
-
                         nlohmann::json request = nlohmann::json::parse(out);
                         std::string request_type = request["type"];
-
-                        if (request_type == "get?") {
-                            response = getEntries();
-                        } else if (request_type == "set?") {
-                            response = updateIsFavorite(request["entry"], request["value"]);
-                        } else if (request_type == "delete?") {
-                            response = deleteSpecificEntry(request["entry"]);
-                        }
-
+                        if (request_type == "get?") { response = getEntries();} 
+                        else if (request_type == "set?") {response = updateIsFavorite(request["entry"], request["value"]);} 
+                        else if (request_type == "delete?") {response = deleteSpecificEntry(request["entry"]);}
                         WebSocketStream.write(boost::asio::buffer(response));
                     }
                     catch(boost::beast::system_error const& se)
@@ -130,14 +104,9 @@ void serverLoop() {
                             break;
                         }
                     }
-                                       
-
                 }
-
             }
         }.detach();
     }
-
 }
-
 #endif
