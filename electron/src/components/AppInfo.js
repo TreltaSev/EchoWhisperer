@@ -92,9 +92,7 @@ const AppInfo = (props) => {
         const interval = setInterval(() => {
             _setRunningTicker(_runningTicker => _runningTicker + 1);
         }, 1000);
-        return () => {
-            clearInterval(interval);
-        }
+        return () => {clearInterval(interval);}
     }, [])
 
     return (
@@ -103,8 +101,7 @@ const AppInfo = (props) => {
                 <Text small={true} color="rgba(236, 241, 255, 0.5)">loggerActive?</Text>
                 <Text small={true} color={_loggerActive.color}>{_loggerActive.text}</Text>                
             </BTextGroup>
-            <RefreshChip isConnected={props.isConnected}/>
-            
+            <RefreshChip isConnected={props.isConnected}/>            
 
             <div className={styling.flex_fill_width}/>
             
