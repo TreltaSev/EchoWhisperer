@@ -18,6 +18,7 @@ const listeners = (window) => {
 
 const createWindow = () => {
     const win = new BrowserWindow({
+        backgroundColor: "#212121",
         width: 800,
         minWidth: 400,
         height: 600,
