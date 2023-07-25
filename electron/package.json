@@ -39,7 +39,7 @@
     "productName": "EchoWhisperer",
     "directories": {
       "output": "nsis_build"
-    },    
+    },
     "win": {
       "target": "nsis",
       "publisherName": "Trelta"
@@ -51,7 +51,10 @@
     }
   },
   "dependencies": {
-    "file-loader": "^6.2.0"
+    "file-loader": "^6.2.0",
+    "semver": "^7.5.4"
   },
-  "files": ["./dist"]
+  "files": [
+    "./dist"
+  ]
 }
