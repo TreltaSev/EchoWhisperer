@@ -5,7 +5,8 @@ import SortingSettings from "./SortingSettings";
 import NavigationBar from "@components/NavigationBar";
 import AppInfo from "./AppInfo";
 import custom_styling from "@assets/custom.module.css"
-import { fileVerify } from "@components/global";
+import { fileVerify, Portal, _pathEntries, getEntries } from "@components/global";
+const fs = require('fs');
 
 const App = () => {
   const [socket, setSocket] = useState(null);  
@@ -69,10 +70,31 @@ const App = () => {
       };
     };
 
-    createWebSocket();    
+    createWebSocket();
+    
+    let offlineReaderInterval = setInterval(() => {
+      // Check if isConnected is set to true
+      if (isConnected === true) {
+        return;
+      }
+
+      // Since isconnected is false, broadcast it.
+      Portal.emit("notConnected!", {});
+
+      // Make sure entries.bin is discoverable
+      fileVerify();
+
+      // Read the data from the bin file
+      const _entries = getEntries(_pathEntries);
+
+      // Replace entries with parsed data from bin file
+      setEntries(_entries);
+
+    }, 1000);
 
     return () => {
       clearInterval(interval);
+      clearInterval(offlineReaderInterval);
       if (socket) {
         socket.close();
       }

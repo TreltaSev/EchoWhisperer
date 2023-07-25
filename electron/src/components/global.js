@@ -46,7 +46,7 @@ export const _pathEntries  = `${_pathBin}/entries.bin`;
 * if _val is undefined this method returns _default
 * if it isn't undefined then it returns _val.
 *
-* Added In `~v0.0.1`
+* Added In `v0.0.1`
 *
 * Resides In `electron.components.global.js`
 * @param {*} _val 
@@ -118,6 +118,13 @@ const jsVerify = () => {
 }
 
 
+/**
+ * "Portal" class which is able to listen for and emit
+ * requests throughout the application.
+ * saves all requeusts in a static dictionary.
+ * 
+ * Added in `v0.0.2`
+ */
 export const Portal = class {
 
     static eventListeners = {};
@@ -138,4 +145,41 @@ export const Portal = class {
 }
 
 
-
+/**
+ * Gets and parses all entries from `bin/entries.bin`
+ * returns all of the entres in an array showine these values:
+ * `name`
+ * `time`
+ * `isFavorite`
+ * `pid`
+ * 
+ * Added in `v0.0.3`
+ */
+export const getEntries = (fileName) => {
+    const fileData = fs.readFileSync(fileName);
+    const entries = [];
+  
+    let offset = 0;
+    while (offset < fileData.length) {
+      const nameSize = fileData.readInt32LE(offset);
+      offset += 4;
+  
+      const nameBuffer = fileData.slice(offset, offset + nameSize);
+      const name = nameBuffer.toString();
+      offset += nameSize;
+  
+      const time = fileData.readInt32LE(offset);
+      offset += 4;
+  
+      const isFavorite = fileData.readInt32LE(offset);
+      offset += 4;
+  
+      const pid = fileData.readInt32LE(offset);
+      offset += 4;
+  
+      const entry = { name, time, isFavorite, pid };
+      entries.push(entry);
+    }
+  
+    return entries;
+  }

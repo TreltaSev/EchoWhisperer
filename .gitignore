@@ -10,6 +10,7 @@
 
 node_modules/
 nsis_build/
+bin/
 
 dist/
 

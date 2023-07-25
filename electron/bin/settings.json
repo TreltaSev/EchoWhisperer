@@ -1,0 +1,10 @@
+{
+	"sortbyname?": false,
+	"sortbytime?": false,
+	"prioritizefavorite?": false,
+	"hideallnonfavorites?": false,
+	"hideallfavorites?": false,
+	"prioritizeopen": false,
+	"hideallopen?": false,
+	"hideallnotopen?": false
+}
