@@ -22,7 +22,6 @@ const App = () => {
 
   useEffect(() => {     
     window.addEventListener("resize", () => {
-      console.log(`w: ${window.innerWidth}, h: ${window.innerHeight}`)
       if (window.innerWidth < 750) {
         _setHideSettings(true)
       } else {
@@ -42,7 +41,6 @@ const App = () => {
       let interval = 0;
 
       newSocket.onopen = () => {
-        console.log('WebSocket connected');
         newSocket.send(JSON.stringify({type: "get?"}));
         setSocket(newSocket);
         update(true);
@@ -56,10 +54,8 @@ const App = () => {
       };
 
       newSocket.onclose = () => {
-        console.log('WebSocket connection closed');
         setSocket(null);
         update(false);
-        console.log('Attempting to reconnect...');
         setTimeout(createWebSocket, 3000);
         clearInterval(interval);
       };
@@ -78,7 +74,6 @@ const App = () => {
           else if (data["type"] == "set?") {newSocket.send(JSON.stringify({type: "get?"}));} 
           else if (data["type"] == "delete?") {newSocket.send(JSON.stringify({type: "get?"}));}
         } catch (e) {
-          console.log(event.data)
           console.warn(e)
         }
       };
@@ -88,7 +83,6 @@ const App = () => {
     
     let offlineReaderInterval = setInterval(() => {
       // Check if isConnected is set to true
-      console.log(`isConnected: ${effectConnected}`)
       if (effectConnected === true) {
         return;
       }
