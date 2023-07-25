@@ -161,25 +161,64 @@ export const getEntries = (fileName) => {
   
     let offset = 0;
     while (offset < fileData.length) {
-      const nameSize = fileData.readInt32LE(offset);
-      offset += 4;
-  
+      const nameSize = fileData.readInt32LE(offset);offset += 4;  
       const nameBuffer = fileData.slice(offset, offset + nameSize);
-      const name = nameBuffer.toString();
-      offset += nameSize;
-  
-      const time = fileData.readInt32LE(offset);
-      offset += 4;
-  
-      const isFavorite = fileData.readInt32LE(offset);
-      offset += 4;
-  
-      const pid = fileData.readInt32LE(offset);
-      offset += 4;
-  
+      const name = nameBuffer.toString();offset += nameSize;  
+      const time = fileData.readInt32LE(offset);offset += 4;  
+      const isFavorite = fileData.readInt32LE(offset);offset += 4;  
+      const pid = fileData.readInt32LE(offset);offset += 4;  
       const entry = { name, time, isFavorite, pid };
       entries.push(entry);
-    }
-  
+    }  
     return entries;
-  }
+}
+
+/**
+ * Finds an entry by name then removes it, converted from c++
+ * 
+ * Added in `v0.0.3`
+ */
+export const deleteEntry = (fileName, entryName) => {
+    const fileData = fs.readFileSync(fileName);
+    const entries = [];
+    let offset = 0;
+    let foundEntry = false;
+    while (offset < fileData.length) {
+        const nameSize = fileData.readInt32LE(offset);offset += 4;  
+        const nameBuffer = fileData.slice(offset, offset + nameSize);
+        const name = nameBuffer.toString();offset += nameSize;  
+        const time = fileData.readInt32LE(offset);offset += 4;  
+        const isFavorite = fileData.readInt32LE(offset);offset += 4;  
+        const pid = fileData.readInt32LE(offset);offset += 4;  
+        if (name !== entryName) {
+            const entry = { name, time, isFavorite, pid };
+            entries.push(entry);
+        } else {
+            foundEntry = true;
+        }
+    }
+
+    if (foundEntry) {
+        saveBulk(fileName, entries);
+    }
+}
+
+/**
+ * Saves all entries in a list
+ * 
+ * Added in `v0.0.3`
+ */
+export const saveBulk = (fileName, entries) => {
+    const fileData = [];
+    for (const entry of entries) {
+        const nameSize = entry.name.length;
+        const nameSizeBuffer = Buffer.alloc(4);nameSizeBuffer.writeInt32LE(nameSize);
+        const nameBuffer = Buffer.from(entry.name, "utf-8");
+        const timeBuffer = Buffer.alloc(4);timeBuffer.writeInt32LE(entry.time);
+        const isFavoriteBuffer = Buffer.alloc(4);isFavoriteBuffer.writeInt32LE(entry.isFavorite);
+        const pidBuffer = Buffer.alloc(4);pidBuffer.writeInt32LE(entry.pid);
+        fileData.push(nameSizeBuffer, nameBuffer, timeBuffer, isFavoriteBuffer, pidBuffer);
+    };
+    const buffer = Buffer.concat(fileData);
+    fs.writeFileSync(fileName, buffer, {flag: "w"});
+}
