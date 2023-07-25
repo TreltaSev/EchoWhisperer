@@ -1,1 +1,1 @@
-g++ -o logger.exe -I"./include" ./src/main.cpp -lws2_32 -mwindows -static -static-libgcc -static-libstdc++
+g++ -o echowhispererlogger.exe -I"./include" ./src/main.cpp -lws2_32 -mwindows -static -static-libgcc -static-libstdc++

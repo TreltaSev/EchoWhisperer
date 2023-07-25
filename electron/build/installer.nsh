@@ -2,11 +2,13 @@
 
 !macro customInstall 
     SetOutPath $INSTDIR
-    File "F:\Programming\C++\EchoWhisperer\c++\logger.exe"
-    CreateShortCut "$SMSTARTUP\Logger.lnk" "$INSTDIR\logger.exe"
-    Exec "$INSTDIR\logger.exe"
+    File "F:\Programming\C++\EchoWhisperer\c++\echowhispererlogger.exe"
+    CreateShortCut "$SMSTARTUP\echowhispererlogger.lnk" "$INSTDIR\echowhispererlogger.exe"
+    Exec "$INSTDIR\echowhispererlogger.exe"
 !macroend
 
 !macro customUninstall
-    Delete "$SMSTARTUP\Logger.lnk"
+    nsExec::Exec '"taskkill" /f /IM "echowhispererlogger.exe'
+    Delete "$INSTDIR\echowhispererlogger.exe"
+    Delete "$SMSTARTUP\echowhispererlogger.lnk"
 !macroend

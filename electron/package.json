@@ -1,6 +1,6 @@
 {
   "name": "echowhisperer",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "A program written in c++ which sends out a \"ping\" to check for every process, then logs that inside a bin file. this repeats itself every 5 seconds with 99.40% accuracy.",
   "main": "src/main.js",
   "scripts": {

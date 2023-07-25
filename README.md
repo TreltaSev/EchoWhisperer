@@ -1,4 +1,4 @@
-# EchoWhisperer (Main) v0.0.3 
+# EchoWhisperer (Main) v0.0.4
 
 ### A up-to-date process logger for easy use and bragging rights for WINDOWS.
 Echo Whisperer is a commandline/gui application that simply logs the amount 
