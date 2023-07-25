@@ -1,4 +1,4 @@
-# EchoWhisperer (Main) v0.0.2 
+# EchoWhisperer (Main) v0.0.3 
 
 ### A up-to-date process logger for easy use and bragging rights for WINDOWS.
 Echo Whisperer is a commandline/gui application that simply logs the amount 
@@ -18,7 +18,7 @@ You can simply download the latest version and run the installer however if you 
 # Development
 For development if you choose to use my *big bran code* you can simply clone the respository or download the files manuually like you normally would. after that you just gotta run a few commands to start coding in this shit code. for c++ you need to actually compile the program, the command for that is
 ```bash
-cd "./c++" && g++ -o main.exe -I"./include" ./src/main.cpp -lws2_32
+cd "./c++" && g++ -o logger.exe -I"./include" ./src/main.cpp -lws2_32
 ```
 for the electron part its quite simple, you just need to run these commands from the root of the project
 ```bash
