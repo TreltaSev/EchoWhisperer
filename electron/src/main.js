@@ -1,7 +1,5 @@
 const {BrowserWindow, app, Menu, ipcMain} = require("electron");
 const path = require('path');
-const os = require('os');
-const fs = require("fs");
 process.env['ELECTRON_DISABLE_SECURITY_WARNINGS'] = true;
 
 const listeners = (window) => {
@@ -36,7 +34,7 @@ const createWindow = () => {
 
     Menu.setApplicationMenu(null);
     win.loadFile("index.html");
-    win.webContents.openDevTools();
+    // win.webContents.openDevTools();
     listeners(win);
 };
 
