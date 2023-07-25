@@ -90,3 +90,11 @@
     top: 50%;
 
 }
+
+.AppInfo_hoverRotate {
+    transition: 0.5s;
+}
+
+.AppInfo_hoverRotate_active {
+    transform: rotate(-45deg);
+}

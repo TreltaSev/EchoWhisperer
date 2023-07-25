@@ -37,6 +37,11 @@ export const _pathSettings = `${_pathBin}/settings.json`;
  */
 export const _pathEntries  = `${_pathBin}/entries.bin`;
 
+/**
+ * path to logger.exe
+ */
+export const _pathLogger = `${__dirname}${pathRemedy}/logger.exe`
+
 
 
 
@@ -109,6 +114,14 @@ export const fileVerify = () => {
     if (fs.existsSync(_pathSettings) === false) {_writeSettings();}
     jsVerify();
     if (fs.existsSync(_pathEntries) === false) {fs.writeFileSync(_pathEntries, "");}
+}
+
+/**
+ * Method that checks if logger.exe exists
+ * @returns 
+ */
+export const loggerVerify = () => {
+    return (fs.existsSync(_pathLogger))
 }
 
 const jsVerify = () => {

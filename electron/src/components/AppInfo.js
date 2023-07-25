@@ -4,10 +4,39 @@
  * 
  * @returns 
  */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styling from "@assets/styling.module.css"
-
+import custom_styling from "@assets/custom.module.css"
+import {RefreshIcon} from "@assets/icons.js"
+import { undefinedCheck, _pathLogger, loggerVerify } from "@components/global";
+const { spawn } = require("child_process")
 /* Make the app info part of the application. */
+
+{/* Refresh Chip */}
+const RefreshChip = (props) => {
+    const IconRef = useRef(null);
+    const _isConnected = undefinedCheck(props.isConnected, false)
+
+    const click = () => {
+        if (!_isConnected && loggerVerify()) {
+            spawn(_pathLogger, [], {detached: true, stdio: "ignore"})
+        }
+    }
+    
+    const mouseEnter = () => {
+        IconRef.current.classList.add(custom_styling.AppInfo_hoverRotate_active);
+    }
+
+    const mouseLeave = () => {
+        IconRef.current.classList.remove(custom_styling.AppInfo_hoverRotate_active);
+    }
+
+    return (
+        <div ref={IconRef} onClick={() => click()} onMouseEnter={() => mouseEnter()} onMouseLeave={() => mouseLeave()} className={custom_styling.AppInfo_hoverRotate}>
+            <RefreshIcon/>
+        </div>
+    )
+}
 
 {/* Basic Text Component */}
 const Text = (props) => {
@@ -69,11 +98,13 @@ const AppInfo = (props) => {
     }, [])
 
     return (
-        <div style={{height: 20, gap: 10, paddingLeft: 10, paddingRight:10}} className={`${styling.flex_row} ${styling.flex_fill_width} ${styling.border_box} ${styling.border_top} ${styling.dark_sub} ${styling.dark_accent} ${styling.align_items_center}`}>
+        <div style={{height: 20, gap: 5, paddingLeft: 10, paddingRight:10, overflow: "hidden"}} className={`${styling.flex_row} ${styling.flex_fill_width} ${styling.border_box} ${styling.border_top} ${styling.dark_sub} ${styling.dark_accent} ${styling.align_items_center}`}>
             <BTextGroup>
                 <Text small={true} color="rgba(236, 241, 255, 0.5)">loggerActive?</Text>
-                <Text small={true} color={_loggerActive.color}>{_loggerActive.text}</Text>
+                <Text small={true} color={_loggerActive.color}>{_loggerActive.text}</Text>                
             </BTextGroup>
+            <RefreshChip isConnected={props.isConnected}/>
+            
 
             <div className={styling.flex_fill_width}/>
             

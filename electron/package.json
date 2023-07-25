@@ -51,6 +51,7 @@
     }
   },
   "dependencies": {
+    "child_process": "^1.0.2",
     "file-loader": "^6.2.0",
     "semver": "^7.5.4"
   },
