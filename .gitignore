@@ -11,7 +11,7 @@
 node_modules/
 nsis_build/
 **/bin/
-
+depracated/
 dist/
 
 # Precompiled Headers
