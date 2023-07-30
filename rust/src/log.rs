@@ -54,7 +54,7 @@ impl Logger {
         let encoded_entries = serialize(entries)?;
         let mut file = File::create(self.bin_path.to_string())?;
         file.write_all(&encoded_entries)?;
-        Ok(())
+        return Ok(())
     }
 
     /* Reads all the entries from a file path */
@@ -64,7 +64,7 @@ impl Logger {
         let mut buffer = Vec::new();
         file.read_to_end(&mut buffer)?;
         let entries: Vec<Entry> = deserialize(&buffer)?;
-        Ok(entries)
+        return Ok(entries)
     }
 
     /* Adds an entry to the file */
@@ -73,14 +73,23 @@ impl Logger {
         let mut entries: Vec<Entry> = self.read()?;
         entries.push(entry);
         self.write(&entries)?;
-        Ok(())
+        return Ok(())
     }
 
     /* Bulk adds entries so less writing operations */
     #[allow(dead_code)]
     pub fn bulk_add (&mut self, entries: Vec<Entry>) -> Result<(), Box<dyn Error>> {
-
-        Ok(())
+        let mut source_entries: Vec<Entry> = self.read()?;
+        for entry in entries {
+            match self.exists(entry.name) {
+                Ok(result) => {
+                    if result == false {
+                        source_entries.
+                    }
+                }
+            }
+        }
+        return Ok(())
     }
 
     /* Removes an entry from the file with an entry name */
@@ -89,7 +98,7 @@ impl Logger {
         let mut entries: Vec<Entry> = self.read()?;
         entries.retain(|entry| entry.name != entry_name);
         self.write(&entries);
-        Ok(())
+        return Ok(())
     }
 
     /* Checks if a entry alreayd exists */
@@ -101,7 +110,13 @@ impl Logger {
                 return Ok(true);
             }
         }
-        Ok(false)
+        return Ok(false);
+    }
+
+    /* Cross checks a entry with a vector */
+    #[allow(dead_code)]
+    pub fn spec_exists(&mut self, entries: Vec<Entry>, entry_name: String) -> Result<bool, Box<dyn Error>> {
+        
     }
 
     /* Callback method used in EnumWindows. */
