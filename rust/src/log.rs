@@ -116,7 +116,12 @@ impl Logger {
     /* Cross checks a entry with a vector */
     #[allow(dead_code)]
     pub fn spec_exists(&mut self, entries: Vec<Entry>, entry_name: String) -> Result<bool, Box<dyn Error>> {
-        
+        for entry in entries {
+            if entry.name == entry_name {
+                return Ok(true);
+            }
+        }
+        return Ok(false);
     }
 
     /* Callback method used in EnumWindows. */
