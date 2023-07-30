@@ -3,7 +3,7 @@ mod ext;
 extern crate winapi;
 
 use log::{Logger, Entry};
-use ext::ProcessInformation;
+// use ext::ProcessInformation;
 
 fn main () {
     let mut instance: Logger = Logger::new(String::from("test.bin"));

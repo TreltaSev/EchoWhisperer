@@ -36,6 +36,7 @@ pub struct Logger {
 impl Logger {
 
     /* Prints out all processes that have a window to them. */
+    #[allow(dead_code)]
     pub fn get(&mut self) -> Vec<ProcessInformation> {
         let mut applications: Vec<ProcessInformation> = Vec::new();
 
@@ -75,7 +76,7 @@ impl Logger {
         if buffer.is_empty() {
             return Ok(Vec::new());
         }
-        
+
         let entries: Vec<Entry> = deserialize(&buffer)?;
         return Ok(entries)
     }
@@ -84,6 +85,15 @@ impl Logger {
     #[allow(dead_code)]
     pub fn add (&mut self, entry: Entry) -> Result<(), Box<dyn Error>> {
         let mut entries: Vec<Entry> = self.read()?;
+
+        match self.exists(&entry.name) {
+            Ok(result) => {
+                if result == true {
+                    return Ok(())
+                }
+            }
+            Err(_) => {}
+        }
         entries.push(entry);
         self.write(&entries)?;
         return Ok(())
@@ -120,10 +130,10 @@ impl Logger {
 
     /* Checks if a entry alreayd exists */
     #[allow(dead_code, unused_must_use)]
-    pub fn exists(&mut self, entry_name: String) -> Result<bool, Box<dyn Error>> {
+    pub fn exists(&mut self, entry_name: &String) -> Result<bool, Box<dyn Error>> {
         let entries: Vec<Entry> = self.read()?;
         for entry in entries {
-            if entry.name == entry_name {
+            if entry.name == *entry_name {
                 return Ok(true);
             }
         }
