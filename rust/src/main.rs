@@ -11,7 +11,8 @@ fn main () {
     // for process in processes {
     //     println!("Name: [{name:}] | ID: [{id:}]", name=process.name, id=process.process_id)
     // }
-    match instance.add(Entry {name: String::from("testname.exe"), time: 100, id: 999, is_favorite: true}) {
+    
+    match instance.bulk_add(instance.get()) {
         Ok (_) => {
             print!("All Good!");
         }

@@ -86,14 +86,10 @@ impl Logger {
     pub fn add (&mut self, entry: Entry) -> Result<(), Box<dyn Error>> {
         let mut entries: Vec<Entry> = self.read()?;
 
-        match self.exists(&entry.name) {
-            Ok(result) => {
-                if result == true {
-                    return Ok(())
-                }
-            }
-            Err(_) => {}
+        if self.exists(&entry.name)? == true{
+            return Ok(())
         }
+
         entries.push(entry);
         self.write(&entries)?;
         return Ok(())
@@ -101,20 +97,21 @@ impl Logger {
 
     /* Bulk adds entries so less writing operations */
     #[allow(dead_code, unused_variables)]
-    pub fn bulk_add (&mut self, entries: Vec<Entry>) -> Result<(), Box<dyn Error>> {
+    pub fn bulk_add (&mut self, processes: Vec<ProcessInformation>) -> Result<(), Box<dyn Error>> {
         let mut source_entries: Vec<Entry> = self.read()?;
-        for entry in entries {
-            match self.spec_exists(&source_entries, &entry.name) {
-                Ok(result) => {
-                    if result == false {
-                        source_entries.push(entry);
-                    }
-                }
+        for process in processes {
+            let mut processed_entry = Entry {name: process.name, time: 0, id: process.process_id, is_favorite: false};
 
-                Err(error) => {
-                    // Error
-                }
-            }
+        }
+        return Ok(())
+    }
+
+    /* Bulk update */
+    #[allow(dead_code, unused_variables)]
+    pub fn bulk_update(&mut self, entries: Vec<Entry>) -> Result<(), Box<dyn Error>> {
+        let mut source_entries: Vec<Entry> self.read()?;
+        for entry in entrues {
+
         }
         return Ok(())
     }
@@ -138,6 +135,18 @@ impl Logger {
             }
         }
         return Ok(false);
+    }
+
+    /* Gets entry */
+    #[allow(dead_code, unused_must_use)]
+    pub fn find(&mut self, entry_name: &String) -> Result<Entry, Box<dyn Error>> {
+        let entries: Vec<Entry> = self.read()?;
+        for entry in entries {
+            if entry.name == *entry_name {
+                return Ok(entry);
+            }
+        }
+        return Ok(Entry {name: String::from("=-nf-="), time: 999, id: 999, is_favorite: false});
     }
 
     /* Cross checks a entry with a vector */
