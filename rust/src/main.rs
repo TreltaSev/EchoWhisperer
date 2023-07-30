@@ -6,7 +6,7 @@ use log::Logger;
 use ext::ProcessInformation;
 
 fn main () {
-    let mut instance: Logger = Logger::default();
+    let mut instance: Logger = Logger::new(String::from("bin/path"));
     let processes: Vec<ProcessInformation> = instance.get();
 
     for process in processes {

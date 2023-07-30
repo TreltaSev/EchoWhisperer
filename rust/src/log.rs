@@ -10,13 +10,27 @@ use winapi::um::psapi::K32GetModuleBaseNameW;
 use winapi::um::processthreadsapi::OpenProcess;
 use winapi::um::winnt::{PROCESS_QUERY_INFORMATION, PROCESS_VM_READ, HANDLE};
 
+// Write Modules
+use std::io::{Read, Write};
+use std::fs::File;
+use serde::{Serialize, Deserialize};
+use bincode::{serialize, deserialize};
+
 use crate::ext::ProcessInformation;
 
+#[derive(Debug, Serialize, Deserialize)]
+pub struct Entry {
+    name: String,
+    time: u32,
+    id: u32,
+    is_favorite: bool
+}
 
-pub struct Logger;
+pub struct Logger {
+    bin_path: String
+}
 
-/* Logger Implementation
-*/
+/* Logger Implementation */
 impl Logger {
 
     /* Prints out all processes that have a window to them. */
@@ -32,9 +46,26 @@ impl Logger {
         return applications;
     }
 
-    /**
-     * Callback method used in EnumWindows.
-     */
+    /* Writes a vector of entries to a binary file, takes in a path string  */
+    #[allow(dead_code)]
+    pub fn write(file_path: &str, entries: &Vec<Entry>) -> Result<(), Box<dyn std::error::Error>> {
+        let encoded_entries = serialize(entries)?;
+        let mut file = File::create(file_path)?;
+        file.write_all(&encoded_entries)?;
+        Ok(())
+    }
+
+    /* Reads all the entries from a file path */
+    #[allow(dead_code)]
+    pub fn read(file_path: &str) -> Result<Vec<Entry>, Box<dyn std::error::Error>> {
+        let mut file = File::open(file_path)?;
+        let mut buffer = Vec::new();
+        file.read_to_end(&mut buffer)?;
+        let entries: Vec<Entry> = deserialize(&buffer)?;
+        Ok(entries)
+    }
+
+    /* Callback method used in EnumWindows. */
     #[allow(dead_code)]
     unsafe extern "system" fn enum_callback(h_wnd: HWND, l_param: LPARAM) -> i32 {
 
@@ -74,12 +105,12 @@ impl Logger {
 
         return 1;
     }
+
+    /* Constructor */
+    pub fn new(path_input: String) -> Logger {
+        Logger { bin_path: path_input }
+    }
+    
 }
 
-/* Default constructor for logger */
-impl Default for Logger {
-    fn default() -> Self {
-        return Self {};
-    }
-}
 
