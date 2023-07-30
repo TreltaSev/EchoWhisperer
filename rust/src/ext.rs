@@ -6,9 +6,9 @@
  */
 
 
- /* ProcessInformation structure for easy displaying of processes with enumwindows */
- #[derive(Debug, PartialEq)]
+ /* ProcessInformation structure for easy displaying of processes with enumwindows*/
+ #[derive(PartialEq)]
  pub struct ProcessInformation {
     pub name: String,
-    pub process_id: u32,
+    pub process_id: u16,
  }

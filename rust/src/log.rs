@@ -20,11 +20,11 @@ use std::error::Error;
 
 use crate::ext::ProcessInformation;
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize, Clone)]
 pub struct Entry {
     pub name: String,
     pub time: u32,
-    pub id: u32,
+    pub id: u16,
     pub is_favorite: bool
 }
 
@@ -95,21 +95,27 @@ impl Logger {
         return Ok(())
     }
 
-    /* Bulk adds entries so less writing operations */
-    #[allow(dead_code, unused_variables)]
-    pub fn bulk_add (&mut self, processes: &Vec<ProcessInformation>) -> Result<(), Box<dyn Error>> {
-        // Add bulk
-        return Ok(());
-    }
-
     /* Bulk update */
-    #[allow(dead_code, unused_variables, unused_mut)]
-    pub fn bulk_update(&mut self, entries: Vec<Entry>) -> Result<(), Box<dyn Error>> {
-        let mut source_entries: Vec<Entry> = self.read()?;
-        for entry in entries {
+    pub fn bulk_update(&mut self, processes: Vec<ProcessInformation>) -> Result<(), Box<dyn Error>> {
+        let mut out_entries: Vec<Entry> = Vec::new();
+        let mut source_entries = self.read()?;
 
+        for process in processes {
+            let mut out_entry = Entry {
+                name: process.name, 
+                time: 0, 
+                id: process.process_id,
+                is_favorite: false
+            };
+            
+            if self.spec_exists(&source_entries[..], &out_entry.name)? {
+                out_entry = self.spec_find(&source_entries[..], &out_entry.name)?;
+            }
+            out_entry.time += 5;
+            out_entries.push(out_entry);
         }
-        return Ok(())
+        self.write(&out_entries)?;
+        return Ok(());
     }
 
     /* Removes an entry from the file with an entry name */
@@ -133,21 +139,38 @@ impl Logger {
         return Ok(false);
     }
 
+    /* Gets entry Special */
+    #[allow(dead_code, unused_must_use)]
+    pub fn spec_find(&mut self, entries: &[Entry], entry_name: &str) -> Result<Entry, Box<dyn Error>> {
+        if let Some(entry) = entries.iter().find(|entry| entry.name == entry_name) {
+            return Ok(entry.clone());
+        }
+        return Ok(Entry {
+            name: String::from("=-nf-="), 
+            time: 999, 
+            id: 999, 
+            is_favorite: false});
+    }
+
     /* Gets entry */
     #[allow(dead_code, unused_must_use)]
-    pub fn find(&mut self, entry_name: &String) -> Result<Entry, Box<dyn Error>> {
+    pub fn find(&mut self, entry_name: &str) -> Result<Entry, Box<dyn Error>> {
         let entries: Vec<Entry> = self.read()?;
-        for entry in entries {
-            if entry.name == *entry_name {
-                return Ok(entry);
-            }
+        if let Some(entry) = entries.iter().find(|entry| entry.name == entry_name) {
+            return Ok(entry.clone());
         }
-        return Ok(Entry {name: String::from("=-nf-="), time: 999, id: 999, is_favorite: false});
+        return Ok(Entry {
+            name: String::from("=-nf-="), 
+            time: 999, 
+            id: 999, 
+            is_favorite: false});
     }
+
+    
 
     /* Cross checks a entry with a vector */
     #[allow(dead_code)]
-    pub fn spec_exists(&mut self, entries: &Vec<Entry>, entry_name: &String) -> Result<bool, Box<dyn Error>> {
+    pub fn spec_exists(&self, entries: &[Entry], entry_name: &str) -> Result<bool, Box<dyn Error>> {
         for entry in entries {
             if entry.name == *entry_name {
                 return Ok(true);
@@ -185,7 +208,7 @@ impl Logger {
                 let window_title: String = String::from_utf16_lossy(&window_title_buffer);
 
                 // Save process                
-                let process: ProcessInformation = ProcessInformation {name: window_title, process_id: lpdw_process_id};
+                let process: ProcessInformation = ProcessInformation {name: window_title, process_id: lpdw_process_id as u16};
 
                 // Save to vector only if it hasn't already been saved.
                 if !applications.contains(&process) {
