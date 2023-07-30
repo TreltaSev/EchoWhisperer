@@ -22,10 +22,10 @@ use crate::ext::ProcessInformation;
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Entry {
-    name: String,
-    time: u32,
-    id: u32,
-    is_favorite: bool
+    pub name: String,
+    pub time: u32,
+    pub id: u32,
+    pub is_favorite: bool
 }
 
 pub struct Logger {
@@ -57,12 +57,25 @@ impl Logger {
         return Ok(())
     }
 
+    /* Writes a test string  */
+    #[allow(dead_code)]
+    pub fn write_test(&mut self) -> Result<(), Box<dyn Error>> {
+        let mut file = File::create(self.bin_path.to_string())?;
+        file.write_all(b"Heheheha?")?;
+        return Ok(())
+    }
+
     /* Reads all the entries from a file path */
     #[allow(dead_code)]
     pub fn read(&mut self) -> Result<Vec<Entry>, Box<dyn Error>> {
         let mut file = File::open(self.bin_path.to_string())?;
         let mut buffer = Vec::new();
         file.read_to_end(&mut buffer)?;
+
+        if buffer.is_empty() {
+            return Ok(Vec::new());
+        }
+        
         let entries: Vec<Entry> = deserialize(&buffer)?;
         return Ok(entries)
     }
@@ -77,7 +90,7 @@ impl Logger {
     }
 
     /* Bulk adds entries so less writing operations */
-    #[allow(dead_code)]
+    #[allow(dead_code, unused_variables)]
     pub fn bulk_add (&mut self, entries: Vec<Entry>) -> Result<(), Box<dyn Error>> {
         let mut source_entries: Vec<Entry> = self.read()?;
         for entry in entries {
@@ -87,7 +100,7 @@ impl Logger {
                         source_entries.push(entry);
                     }
                 }
-                
+
                 Err(error) => {
                     // Error
                 }
@@ -121,7 +134,7 @@ impl Logger {
     #[allow(dead_code)]
     pub fn spec_exists(&mut self, entries: &Vec<Entry>, entry_name: &String) -> Result<bool, Box<dyn Error>> {
         for entry in entries {
-            if entry.name == entry_name {
+            if entry.name == *entry_name {
                 return Ok(true);
             }
         }
