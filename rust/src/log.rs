@@ -97,20 +97,16 @@ impl Logger {
 
     /* Bulk adds entries so less writing operations */
     #[allow(dead_code, unused_variables)]
-    pub fn bulk_add (&mut self, processes: Vec<ProcessInformation>) -> Result<(), Box<dyn Error>> {
-        let mut source_entries: Vec<Entry> = self.read()?;
-        for process in processes {
-            let mut processed_entry = Entry {name: process.name, time: 0, id: process.process_id, is_favorite: false};
-
-        }
-        return Ok(())
+    pub fn bulk_add (&mut self, processes: &Vec<ProcessInformation>) -> Result<(), Box<dyn Error>> {
+        // Add bulk
+        return Ok(());
     }
 
     /* Bulk update */
-    #[allow(dead_code, unused_variables)]
+    #[allow(dead_code, unused_variables, unused_mut)]
     pub fn bulk_update(&mut self, entries: Vec<Entry>) -> Result<(), Box<dyn Error>> {
-        let mut source_entries: Vec<Entry> self.read()?;
-        for entry in entrues {
+        let mut source_entries: Vec<Entry> = self.read()?;
+        for entry in entries {
 
         }
         return Ok(())
