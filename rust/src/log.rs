@@ -75,8 +75,8 @@ impl Logger {
     }
 
     /* Removes an entry from the file */
-    #[allow(dead_code)]
-    pub fn remove(&mut self, entry_name: String) {
+    #[allow(dead_code, unused_must_use)]
+    pub fn remove(&mut self, entry_name: String) -> Result<(), Box<dyn std::error::Error>> {
         let mut entries: Vec<Entry> = self.read()?;
         entries.retain(|entry| entry.name != entry_name);
         self.write(&entries);
