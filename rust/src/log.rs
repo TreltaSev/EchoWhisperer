@@ -50,7 +50,7 @@ impl Logger {
 
     /* Writes a vector of entries to a binary file, takes in a path string  */
     #[allow(dead_code)]
-    pub fn write(&mut self, entries: &Vec<Entry>) -> Result<(), Box<dyn std::error::Error>> {
+    pub fn write(&mut self, entries: &Vec<Entry>) -> Result<(), Box<dyn Error>> {
         let encoded_entries = serialize(entries)?;
         let mut file = File::create(self.bin_path.to_string())?;
         file.write_all(&encoded_entries)?;
@@ -59,7 +59,7 @@ impl Logger {
 
     /* Reads all the entries from a file path */
     #[allow(dead_code)]
-    pub fn read(&mut self) -> Result<Vec<Entry>, Box<dyn std::error::Error>> {
+    pub fn read(&mut self) -> Result<Vec<Entry>, Box<dyn Error>> {
         let mut file = File::open(self.bin_path.to_string())?;
         let mut buffer = Vec::new();
         file.read_to_end(&mut buffer)?;
@@ -69,16 +69,23 @@ impl Logger {
 
     /* Adds an entry to the file */
     #[allow(dead_code)]
-    pub fn add (&mut self, entry: Entry) -> Result<(), Box<dyn std::error::Error>> {
+    pub fn add (&mut self, entry: Entry) -> Result<(), Box<dyn Error>> {
         let mut entries: Vec<Entry> = self.read()?;
         entries.push(entry);
         self.write(&entries)?;
         Ok(())
     }
 
+    /* Bulk adds entries so less writing operations */
+    #[allow(dead_code)]
+    pub fn bulk_add (&mut self, entries: Vec<Entry>) -> Result<(), Box<dyn Error>> {
+
+        Ok(())
+    }
+
     /* Removes an entry from the file with an entry name */
     #[allow(dead_code, unused_must_use)]
-    pub fn remove(&mut self, entry_name: String) -> Result<(), Box<dyn std::error::Error>> {
+    pub fn remove(&mut self, entry_name: String) -> Result<(), Box<dyn Error>> {
         let mut entries: Vec<Entry> = self.read()?;
         entries.retain(|entry| entry.name != entry_name);
         self.write(&entries);
