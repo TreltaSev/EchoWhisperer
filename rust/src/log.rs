@@ -16,6 +16,8 @@ use std::fs::File;
 use serde::{Serialize, Deserialize};
 use bincode::{serialize, deserialize};
 
+use std::error::Error;
+
 use crate::ext::ProcessInformation;
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -81,6 +83,18 @@ impl Logger {
         entries.retain(|entry| entry.name != entry_name);
         self.write(&entries);
         Ok(())
+    }
+
+    /* Checks if a entry alreayd exists */
+    #[allow(dead_code, unused_must_use)]
+    pub fn exists(&mut self, entry_name: String) -> Result<bool, Box<dyn Error>> {
+        let entries: Vec<Entry> = self.read()?;
+        for entry in entries {
+            if entry.name == entry_name {
+                return Ok(true);
+            }
+        }
+        Ok(false)
     }
 
     /* Callback method used in EnumWindows. */
