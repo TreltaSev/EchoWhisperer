@@ -65,6 +65,16 @@ impl Logger {
         Ok(entries)
     }
 
+    /* Adds an entry to the file */
+    #[allow(dead_code)]
+    pub fn add (&mut self, entry: Entry) -> Result<(), Box<dyn std::error::Error>> {
+        let mut entries: Vec<Entry> = self.read()?;
+        entries.push(entry);
+        self.write(&entries)?;
+        Ok(())
+    }
+
+    
 
     /* Callback method used in EnumWindows. */
     #[allow(dead_code)]
