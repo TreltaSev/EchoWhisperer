@@ -7,9 +7,11 @@
 *.o
 *.obj
 *.bin
+*.pdb
 
 node_modules/
 nsis_build/
+**/target/
 **/bin/
 depracated/
 dist/
