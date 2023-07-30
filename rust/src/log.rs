@@ -48,22 +48,23 @@ impl Logger {
 
     /* Writes a vector of entries to a binary file, takes in a path string  */
     #[allow(dead_code)]
-    pub fn write(file_path: &str, entries: &Vec<Entry>) -> Result<(), Box<dyn std::error::Error>> {
+    pub fn write(&mut self, entries: &Vec<Entry>) -> Result<(), Box<dyn std::error::Error>> {
         let encoded_entries = serialize(entries)?;
-        let mut file = File::create(file_path)?;
+        let mut file = File::create(self.bin_path.to_string())?;
         file.write_all(&encoded_entries)?;
         Ok(())
     }
 
     /* Reads all the entries from a file path */
     #[allow(dead_code)]
-    pub fn read(file_path: &str) -> Result<Vec<Entry>, Box<dyn std::error::Error>> {
-        let mut file = File::open(file_path)?;
+    pub fn read(&mut self) -> Result<Vec<Entry>, Box<dyn std::error::Error>> {
+        let mut file = File::open(self.bin_path.to_string())?;
         let mut buffer = Vec::new();
         file.read_to_end(&mut buffer)?;
         let entries: Vec<Entry> = deserialize(&buffer)?;
         Ok(entries)
     }
+
 
     /* Callback method used in EnumWindows. */
     #[allow(dead_code)]
