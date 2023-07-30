@@ -98,7 +98,7 @@ impl Logger {
     /* Bulk update */
     pub fn bulk_update(&mut self, processes: Vec<ProcessInformation>) -> Result<(), Box<dyn Error>> {
         let mut out_entries: Vec<Entry> = Vec::new();
-        let mut source_entries = self.read()?;
+        let source_entries = self.read()?;
 
         for process in processes {
             let mut out_entry = Entry {

@@ -4,7 +4,7 @@ extern crate winapi;
 
 use log::Logger;
 use ext::ProcessInformation;
-use std::time::{Instant, Duration};
+use std::time::Instant;
 
 
 fn stress(vector: &mut Vec<ProcessInformation>, salt: i32) {
