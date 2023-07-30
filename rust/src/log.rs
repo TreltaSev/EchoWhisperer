@@ -81,11 +81,15 @@ impl Logger {
     pub fn bulk_add (&mut self, entries: Vec<Entry>) -> Result<(), Box<dyn Error>> {
         let mut source_entries: Vec<Entry> = self.read()?;
         for entry in entries {
-            match self.exists(entry.name) {
+            match self.spec_exists(&source_entries, &entry.name) {
                 Ok(result) => {
                     if result == false {
-                        source_entries.
+                        source_entries.push(entry);
                     }
+                }
+                
+                Err(error) => {
+                    // Error
                 }
             }
         }
@@ -115,7 +119,7 @@ impl Logger {
 
     /* Cross checks a entry with a vector */
     #[allow(dead_code)]
-    pub fn spec_exists(&mut self, entries: Vec<Entry>, entry_name: String) -> Result<bool, Box<dyn Error>> {
+    pub fn spec_exists(&mut self, entries: &Vec<Entry>, entry_name: &String) -> Result<bool, Box<dyn Error>> {
         for entry in entries {
             if entry.name == entry_name {
                 return Ok(true);
