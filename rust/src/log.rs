@@ -74,7 +74,14 @@ impl Logger {
         Ok(())
     }
 
-    
+    /* Removes an entry from the file */
+    #[allow(dead_code)]
+    pub fn remove(&mut self, entry_name: String) {
+        let mut entries: Vec<Entry> = self.read()?;
+        entries.retain(|entry| entry.name != entry_name);
+        self.write(&entries);
+        Ok(())
+    }
 
     /* Callback method used in EnumWindows. */
     #[allow(dead_code)]
