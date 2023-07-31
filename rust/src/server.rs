@@ -11,7 +11,11 @@ use tokio_tungstenite::accept_async;
 // Initialize Connection Implementation
  pub struct Connection;
 
- // Stage Implementation
+ // Stage Implementation[]
  impl Connection {
 
+    // Handle Connections
+    async fn handle(stream: tokio::net::TcpStream) {
+        if let Err(e) = None {}
+    }
  }
