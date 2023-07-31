@@ -1,4 +1,4 @@
-/** Log Implementation
+/** rust.src.log.rs
  * Logs all the applications in the current computer.
  */
 
