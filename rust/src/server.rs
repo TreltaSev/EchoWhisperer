@@ -4,10 +4,10 @@
  */
 
 // Mandatory Imports
-use tokio::net::TcpListener;
-use tokio_tungstenite::tungstenite::protocol::Message;
+use tokio::net::{TcpListener, TcpStream};
 use tokio_tungstenite::accept_async;
 use std::error::Error;
+use std::sync::{Arc, Mutex};
 
 // Initialize Connection Implementation
  pub struct Connection;
@@ -17,12 +17,14 @@ use std::error::Error;
 
     // Handle Connections
     async fn handle(&mut self, stream: tokio::net::TcpStream) {
-        if let Err(e) = None {}
+        if let Err(e) = self.process(stream).await {
+            eprintln!("Error Connection: {}", e);
+        }
     }
 
     // Process Connections
     async fn process(&mut self, stream: tokio::net::TcpStream) -> Result<(), Box<dyn Error>> {
-        let websocket_stream = accept_async(stream).await.expect("[~] Error During Websocket Process");
+        accept_async(stream).await.expect("[~] Error During Websocket Process");
         println!("Connected");
         return Ok(());
     }
@@ -35,7 +37,7 @@ use std::error::Error;
 
         println!("Websocket running on: {}", ip_address);
 
-        while let Ok((stream, _)) = listener.accept().await {
+        while let Ok((stream, _)) = tcp_listener.accept().await {
             tokio::spawn(self.handle(stream));
         }
     }

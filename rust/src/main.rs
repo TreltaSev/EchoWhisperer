@@ -1,5 +1,6 @@
 mod log;
 mod ext;
+mod server;
 extern crate winapi;
 
 use log::Logger;
