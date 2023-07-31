@@ -10,23 +10,14 @@ use winapi::um::psapi::K32GetModuleBaseNameW;
 use winapi::um::processthreadsapi::OpenProcess;
 use winapi::um::winnt::{PROCESS_QUERY_INFORMATION, PROCESS_VM_READ, HANDLE};
 
-// Write Modules
-use std::io::{Read, Write};
+// Other Modules
 use std::fs::File;
-use serde::{Serialize, Deserialize};
-use bincode::{serialize, deserialize};
-
 use std::error::Error;
+use std::io::{Read, Write};
+use bincode::{serialize, deserialize};
+use crate::ext::{ProcessInformation, Entry};
 
-use crate::ext::ProcessInformation;
 
-#[derive(Debug, Serialize, Deserialize, Clone)]
-pub struct Entry {
-    pub name: String,
-    pub time: u32,
-    pub id: u16,
-    pub is_favorite: bool
-}
 
 pub struct Logger {
     bin_path: String
@@ -96,6 +87,7 @@ impl Logger {
     }
 
     /* Bulk update */
+    #[allow(dead_code)]
     pub fn bulk_update(&mut self, processes: Vec<ProcessInformation>) -> Result<(), Box<dyn Error>> {
         let mut out_entries: Vec<Entry> = Vec::new();
         let source_entries = self.read()?;
@@ -221,6 +213,7 @@ impl Logger {
     }
 
     /* Constructor */
+    #[allow(dead_code)]
     pub fn new(path_input: String) -> Logger {
         Logger { bin_path: path_input }
     }

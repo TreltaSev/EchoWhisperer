@@ -12,3 +12,12 @@
     pub name: String,
     pub process_id: u16,
  }
+
+ use serde::{Serialize, Deserialize};
+#[derive(Debug, Serialize, Deserialize, Clone)]
+pub struct Entry {
+    pub name: String,
+    pub time: u32,
+    pub id: u16,
+    pub is_favorite: bool
+}
