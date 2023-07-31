@@ -3,4 +3,15 @@
  *  are secure via ssl, though its not needed, its dope to use.
  */
 
- 
+// Mandatory Imports
+use tokio::net::TcpListener;
+use tokio_tungstenite::tungstenite::protocol::Message;
+use tokio_tungstenite::accept_async;
+
+// Initialize Connection Implementation
+ pub struct Connection;
+
+ // Stage Implementation
+ impl Connection {
+
+ }
