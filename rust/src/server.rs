@@ -4,7 +4,7 @@
  */
 
 // Mandatory Imports
-use tokio::net::TcpListener;
+use tokio::{net::TcpListener, io::AsyncReadExt};
 use tokio_tungstenite::accept_async;
 use std::error::Error;
 
@@ -15,10 +15,13 @@ use std::error::Error;
  impl Connection {
 
     // Handle Connections
-    async fn handle(stream: tokio::net::TcpStream) {
+    async fn handle(stream: tokio::net::TcpStream) -> Result<String, Box<dyn Error>> {
         if let Err(e) = Connection::process(stream).await {
             eprintln!("Error Connection: {}", e);
-        }
+        }   
+       
+
+        return Ok(String::from("hhhee"))
     }
 
     // Process Connections
@@ -35,9 +38,13 @@ use std::error::Error;
         let tcp_listener = TcpListener::bind(&ip_address).await.expect("Failed to bind listener with address");
         
         println!("Init");
-
+        
         while let Ok((stream, _)) = tcp_listener.accept().await {
-            Connection::handle(stream).await            
+            match Connection::handle(stream).await {
+                Ok(_) => {}
+                Err(_) => {}
+            }
+
         }
     }
  }
