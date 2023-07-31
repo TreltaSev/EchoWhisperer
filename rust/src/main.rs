@@ -6,6 +6,7 @@ extern crate winapi;
 use log::Logger;
 use ext::ProcessInformation;
 use std::time::Instant;
+use server::Connection;
 
 
 fn _log () {
@@ -21,7 +22,7 @@ fn _log () {
 }
 
 fn main () {
-    
+    Connection::init();
     // Breh 99.9865% accuracy with a 5 second loop.
     // 99.9283% accuracy with a 1 second loop.
 

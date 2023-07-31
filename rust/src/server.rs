@@ -4,10 +4,9 @@
  */
 
 // Mandatory Imports
-use tokio::net::{TcpListener, TcpStream};
+use tokio::net::TcpListener;
 use tokio_tungstenite::accept_async;
 use std::error::Error;
-use std::sync::{Arc, Mutex};
 
 // Initialize Connection Implementation
  pub struct Connection;
@@ -16,14 +15,14 @@ use std::sync::{Arc, Mutex};
  impl Connection {
 
     // Handle Connections
-    async fn handle(&mut self, stream: tokio::net::TcpStream) {
-        if let Err(e) = self.process(stream).await {
+    async fn handle(stream: tokio::net::TcpStream) {
+        if let Err(e) = Connection::process(stream).await {
             eprintln!("Error Connection: {}", e);
         }
     }
 
     // Process Connections
-    async fn process(&mut self, stream: tokio::net::TcpStream) -> Result<(), Box<dyn Error>> {
+    async fn process(stream: tokio::net::TcpStream) -> Result<(), Box<dyn Error>> {
         accept_async(stream).await.expect("[~] Error During Websocket Process");
         println!("Connected");
         return Ok(());
@@ -31,14 +30,14 @@ use std::sync::{Arc, Mutex};
 
     // Initialize Everything
     #[tokio::main]
-    async fn init(&mut self) {
+    pub async fn init() {
         let ip_address = "127.0.0.1:2492";
         let tcp_listener = TcpListener::bind(&ip_address).await.expect("Failed to bind listener with address");
-
-        println!("Websocket running on: {}", ip_address);
+        
+        println!("Init");
 
         while let Ok((stream, _)) = tcp_listener.accept().await {
-            tokio::spawn(self.handle(stream));
+            Connection::handle(stream).await            
         }
     }
  }
