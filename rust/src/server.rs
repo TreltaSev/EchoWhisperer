@@ -6,5 +6,6 @@
 pub struct Connection;
 
 impl Connection {
-    
+    pub async fn init() {
+    }
 }
