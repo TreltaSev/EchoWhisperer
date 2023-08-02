@@ -12,3 +12,4 @@ winapi = { version = "0.3", features = ["winuser", "psapi", "processthreadsapi"]
 tokio = { version = "1", features = ["full"] }
 tokio-tungstenite = "0.15"
 tokio-stream = "0.1"
+ws = "0.9.2"

@@ -17,7 +17,19 @@ use std::io::{Read, Write};
 use bincode::{serialize, deserialize};
 use crate::ext::{ProcessInformation, Entry};
 
-
+/* Basic While True Loop That Runs Every 5 Seconds */
+#[allow (while_true, dead_code)]
+pub fn log_loop() {       
+    while true {
+        let mut instance = Logger::new(String::from("test.bin"));
+        let processes: Vec<ProcessInformation> = instance.get();
+        match instance.bulk_update(processes) {
+            Ok(_) => {}
+            Err(error) => {println!("{}", error)}
+        }
+        std::thread::sleep(std::time::Duration::from_secs(5));
+    }
+}
 
 pub struct Logger {
     bin_path: String
