@@ -3,48 +3,8 @@
  *  are secure via ssl, though its not needed, its dope to use.
  */
 
-// Mandatory Imports
-use tokio::{net::TcpListener, io::AsyncReadExt};
-use tokio_tungstenite::accept_async;
-use std::error::Error;
+pub struct Connection;
 
-// Initialize Connection Implementation
- pub struct Connection;
-
- // Stage Implementation[]
- impl Connection {
-
-    // Handle Connections
-    async fn handle(stream: tokio::net::TcpStream) -> Result<String, Box<dyn Error>> {
-        if let Err(e) = Connection::process(stream).await {
-            eprintln!("Error Connection: {}", e);
-        }   
-       
-
-        return Ok(String::from("hhhee"))
-    }
-
-    // Process Connections
-    async fn process(stream: tokio::net::TcpStream) -> Result<(), Box<dyn Error>> {
-        accept_async(stream).await.expect("[~] Error During Websocket Process");
-        println!("Connected");
-        return Ok(());
-    }
-
-    // Initialize Everything
-    #[tokio::main]
-    pub async fn init() {
-        let ip_address = "127.0.0.1:2492";
-        let tcp_listener = TcpListener::bind(&ip_address).await.expect("Failed to bind listener with address");
-        
-        println!("Init");
-        
-        while let Ok((stream, _)) = tcp_listener.accept().await {
-            match Connection::handle(stream).await {
-                Ok(_) => {}
-                Err(_) => {}
-            }
-
-        }
-    }
- }
+impl Connection {
+    
+}

@@ -6,8 +6,6 @@ extern crate winapi;
 use log::Logger;
 use ext::ProcessInformation;
 use std::time::Instant;
-use server::Connection;
-
 
 fn _log () {
     let mut instance = Logger::new(String::from("test.bin"));
@@ -22,7 +20,7 @@ fn _log () {
 }
 
 fn main () {
-    Connection::init();
+    
     // Breh 99.9865% accuracy with a 5 second loop.
     // 99.9283% accuracy with a 1 second loop.
 
