@@ -15,7 +15,7 @@ You can simply download the latest version and run the installer however if you 
 <div style="height:20px"></div>
 
 # Development
-For development if you choose to use my *big bran code* you can simply clone the respository or download the files manuually like you normally would. after that you just gotta run a few commands to start coding in this shit code. for c++ you need to actually compile the program, the command for that is
+For development if you choose to use my *big bran code* you can simply clone the respository or download the files manuually like you normally would. after that you just gotta run a few commands to start coding in this *bran big* code. for c++ you need to actually compile the program, the command for that is
 ```bash
 cd "./c++" && g++ -o logger.exe -I"./include" ./src/main.cpp -lws2_32
 ```
@@ -31,8 +31,8 @@ cd "./electron" && npm install && npm run dev:refresh
 
 >**Is this at all secure?**
 >
->Fuck no, this isn't secure at all, I mean kinda... there arent
->any vulnerabilities as far as im aware but the connection between
+>Nope, this isn't secure at all, I mean kinda... there arent
+>any vulnerabilities as far  as im aware but the connection between
 >the gui and the c++ logger isn't secure at all, using ws instead of wss. but 
 >that doesn't really matter unless someone wanted to know how much time you spent on your apps.
 >all they would have to do is target a specific port with a specific request.
